@@ -1,3 +1,12 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import 'src/assets/styles/scss/fontawesome.scss';
+@import 'src/assets/styles/scss/brands.scss';
+@import 'src/assets/styles/scss/solid.scss';
+@import 'src/assets/styles/scss/regular.scss';
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
