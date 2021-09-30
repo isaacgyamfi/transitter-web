@@ -1,18 +1,25 @@
-import React, { Fragment, useContext, useState } from 'react';
+import React, { Fragment, useContext, useEffect, useState } from 'react';
 import Sidebar from '../../layouts/global/Sidebar';
 import { Redirect } from 'react-router';
 import AddDriver from '../../components/modals/AddDriver';
+import axios from 'axios';
 
 export default function Drivers() {
   //   const { state } = useContext(AuthContext);
   const [modalIsOpen, setIsOpen] = useState(false);
-  function openModal() {
-    setIsOpen(true);
-  }
+  const [drivers, setDrivers] = useState([]);
+  const openModal = () => setIsOpen(true);
+  const closeModal = () => setIsOpen(false);
 
-  function closeModal() {
-    setIsOpen(false);
-  }
+  const loadDrivers = async () => {
+    const response = await axios.get('http://localhost:5000/drivers');
+    console.log(response.data.data);
+    return setDrivers(response.data.data);
+  };
+
+  useEffect(() => {
+    loadDrivers();
+  }, []);
 
   return (
     <Fragment>
@@ -30,9 +37,7 @@ export default function Drivers() {
               <div
                 className={'mb-5 flex flex-row justify-between items-center'}
               >
-                <h3 className={'font-medium text-xl text-gray-500'}>
-                  Stations
-                </h3>
+                <h3 className={'font-medium text-xl text-gray-500'}>Drivers</h3>
                 <div className={'flex flex-row justify-between items-center'}>
                   <button
                     onClick={() => openModal()}
@@ -55,36 +60,39 @@ export default function Drivers() {
                 style={{ minHeight: 580 }}
                 className={'shadow-md bg-white p-5'}
               >
-                <table className={'table w-full'}>
-                  {/* <thead> */}
-                  <tr className={'text-left'}>
-                    <th className={'font-semibold'}>ID</th>
-                    <th className={'font-semibold'}>Name</th>
-                    <th className={'font-semibold'}>Phone</th>
-                    <th className={'font-semibold'}>Email</th>
-                    <th className={'font-semibold'}>Address</th>
-                    <th className={'font-semibold'}>Taxi Local</th>
-                  </tr>
-                  {/* </thead> */}
-                  <tbody>
-                    <tr className={'text-left'}>
-                      <td>1</td>
-                      <td>GR-1234-20</td>
-                      <td>Toyota Yaris</td>
-                      <td>4Y1SL65848Z411439</td>
-                      <td>James Martey</td>
-                      <td>Legon Taxi Station</td>
-                    </tr>
-                    <tr className={'text-left'}>
-                      <td>1</td>
-                      <td>GR-1234-20</td>
-                      <td>Toyota Yaris</td>
-                      <td>4Y1SL65848Z411439</td>
-                      <td>James Martey</td>
-                      <td>Legon Taxi Station</td>
-                    </tr>
-                  </tbody>
-                </table>
+                <div>
+                  <h3>Registered Drivers</h3>
+                </div>
+                <div className={'mt-2'}>
+                  {drivers.length > 0 ? (
+                    <table className={'table w-full'}>
+                      <tr className={'text-left'}>
+                        <th className={'font-semibold'}>ID</th>
+                        <th className={'font-semibold'}>Name</th>
+                        <th className={'font-semibold'}>Phone</th>
+                        <th className={'font-semibold'}>Email</th>
+                        <th className={'font-semibold'}>Address</th>
+                        <th className={'font-semibold'}>Taxi Local</th>
+                      </tr>
+                      <tbody>
+                        {drivers.map((item, index) => (
+                          <tr className={'text-left'}>
+                            <td>1</td>
+                            <td>{item.name}</td>
+                            <td>{item.phone}</td>
+                            <td>{item.email}</td>
+                            <td>{item.address}</td>
+                            <td>Legon Taxi Station</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  ) : (
+                    <div className={'flex justify-center items-center'}>
+                      <h3>No driver registered</h3>
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
           </section>

@@ -2,7 +2,7 @@ import React from 'react';
 
 export default function SummaryAnalyticsCard({ title, count, color, icon }) {
   return (
-    <div className={'p-2 w-1/2'}>
+    <div className={'p-2 w-1/4'}>
       <div
         className={
           'rounded-md shadow bg-white p-5 flex flex-row justify-between items-center'

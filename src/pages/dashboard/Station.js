@@ -1,13 +1,25 @@
-import React, { Fragment, useContext, useState } from 'react';
+import React, { Fragment, useContext, useEffect, useState } from 'react';
 import Sidebar from '../../layouts/global/Sidebar';
 import { Redirect } from 'react-router';
 import AddStation from '../../components/modals/AddStation';
+import axios from 'axios';
 
 export default function Stations() {
   //   const { state } = useContext(AuthContext);
   const [modalIsOpen, setIsOpen] = useState(false);
+  const [stations, setStations] = useState([]);
   const openModal = () => setIsOpen(true);
   const closeModal = () => setIsOpen(false);
+
+  const loadStations = async () => {
+    const response = await axios.get('http://localhost:5000/stations');
+    console.log(response.data.data);
+    return setStations(response.data.data);
+  };
+
+  useEffect(() => {
+    loadStations();
+  }, []);
 
   return (
     <Fragment>
@@ -50,40 +62,41 @@ export default function Stations() {
                 style={{ minHeight: 580 }}
                 className={'shadow-md bg-white p-5'}
               >
-                <table className={'table w-full'}>
-                  {/* <thead> */}
-                  <tr className={'text-left'}>
-                    <th className={'font-semibold'}>ID</th>
-                    <th className={'font-semibold'}>Name</th>
-                    <th className={'font-semibold'}>Address</th>
-                    <th className={'font-semibold'}>Head</th>
-                    <th className={'font-semibold'}>Contact</th>
-                  </tr>
-                  {/* </thead> */}
-                  <tbody>
-                    <tr className={'text-left'}>
-                      <td>1</td>
-                      <td>Legon Taxi Station</td>
-                      <td>Okponglo, Legon</td>
-                      <td>James Martey</td>
-                      <td>0545123456</td>
-                    </tr>
-                    <tr className={'text-left'}>
-                      <td>1</td>
-                      <td>Legon Taxi Station</td>
-                      <td>Okponglo, Legon</td>
-                      <td>James Martey</td>
-                      <td>0545123456</td>
-                    </tr>
-                    <tr className={'text-left'}>
-                      <td>1</td>
-                      <td>Legon Taxi Station</td>
-                      <td>Okponglo, Legon</td>
-                      <td>James Martey</td>
-                      <td>0545123456</td>
-                    </tr>
-                  </tbody>
-                </table>
+                <div>
+                  <h3>Registered Stations</h3>
+                </div>
+                <div className={'mt-2'}>
+                  {stations.length > 0 ? (
+                    <table className={'table w-full'}>
+                      <tr className={'text-left'}>
+                        <th className={'font-semibold'}>ID</th>
+                        <th className={'font-semibold'}>Name</th>
+                        <th className={'font-semibold'}>Vicinity</th>
+                        <th className={'font-semibold'}>Destinations</th>
+                        <th className={'font-semibold'}>No. of Taxis</th>
+                        <th className={'font-semibold'}>Head</th>
+                        <th className={'font-semibold'}>Contact</th>
+                      </tr>
+                      <tbody>
+                        {stations.map((item, index) => (
+                          <tr className={'text-left'}>
+                            <td>{index + 1}</td>
+                            <td>{item.address.name}</td>
+                            <td>{item.address.vicinity}</td>
+                            <td>{item.destinations.length}</td>
+                            <td>{item.taxis.length}</td>
+                            <td>{item.stationAdmin.name}</td>
+                            <td>{item.stationAdmin.phone}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  ) : (
+                    <div className={'flex justify-center items-center'}>
+                      <h3>No station registered</h3>
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
           </section>

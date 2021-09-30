@@ -25,7 +25,7 @@ export default function Sidebar() {
       >
         <ul className="w-full">
           <Link to={'/'}>
-            <a>
+            <span>
               <li
                 className={`w-full flex flex-row items-center px-3 lg:px-8 py-3 ${
                   router.pathname === '/' ? 'bg-blue-100' : 'hover:bg-blue-200'
@@ -36,10 +36,10 @@ export default function Sidebar() {
                 </span>
                 <h2 className={'text-base'}>Dashboard</h2>
               </li>
-            </a>
+            </span>
           </Link>
           <Link to={'/dashboard/stations'}>
-            <a>
+            <span>
               <li
                 className={`w-full flex flex-row items-center px-3 lg:px-8 py-3 ${
                   router.pathname === '/dashboard/stations'
@@ -52,10 +52,10 @@ export default function Sidebar() {
                 </span>
                 <h2 className={'text-base'}>Stations</h2>
               </li>
-            </a>
+            </span>
           </Link>
           <Link to={'/dashboard/drivers'}>
-            <a>
+            <span>
               <li
                 className={`flex flex-row items-center px-3 lg:px-8 py-3 ${
                   router.pathname === '/dashboard/drivers'
@@ -68,10 +68,10 @@ export default function Sidebar() {
                 </span>
                 <h2 className={'text-base'}>Drivers</h2>
               </li>
-            </a>
+            </span>
           </Link>
           <Link to={'/dashboard/taxis'}>
-            <a>
+            <span>
               <li
                 className={`flex flex-row items-center px-3 lg:px-8 py-3 ${
                   router.pathname === '/dashboard/taxis'
@@ -84,10 +84,10 @@ export default function Sidebar() {
                 </span>
                 <h2 className={'text-base'}>Taxis</h2>
               </li>
-            </a>
+            </span>
           </Link>
           <Link to={'/dashboard/complaints'}>
-            <a>
+            <span>
               <li
                 className={`flex flex-row items-center px-3 lg:px-8 py-3 ${
                   router.pathname === '/dashboard/complaints'
@@ -98,9 +98,9 @@ export default function Sidebar() {
                 <span className={'mr-5'}>
                   <i className={'fas fa-user-shield text-xl'} />
                 </span>
-                <h2 className={'text-base'}>Complains</h2>
+                <h2 className={'text-base'}>Complaints</h2>
               </li>
-            </a>
+            </span>
           </Link>
         </ul>
         <button

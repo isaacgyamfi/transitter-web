@@ -6,6 +6,7 @@ import AddTaxi from '../../components/modals/AddTaxi';
 export default function Taxis() {
   //   const { state } = useContext(AuthContext);
   const [modalIsOpen, setIsOpen] = useState(false);
+  const [taxis, setTaxis] = useState([]);
   function openModal() {
     setIsOpen(true);
   }
@@ -55,36 +56,37 @@ export default function Taxis() {
                 style={{ minHeight: 580 }}
                 className={'shadow-md bg-white p-5'}
               >
-                <table className={'table w-full'}>
-                  {/* <thead> */}
-                  <tr className={'text-left'}>
-                    <th className={'font-semibold'}>ID</th>
-                    <th className={'font-semibold'}>Registration</th>
-                    <th className={'font-semibold'}>Brand</th>
-                    <th className={'font-semibold'}>VIN</th>
-                    <th className={'font-semibold'}>Driver</th>
-                    <th className={'font-semibold'}>Taxi Local</th>
-                  </tr>
-                  {/* </thead> */}
-                  <tbody>
-                    <tr className={'text-left'}>
-                      <td>1</td>
-                      <td>GR-1234-20</td>
-                      <td>Toyota Yaris</td>
-                      <td>4Y1SL65848Z411439</td>
-                      <td>James Martey</td>
-                      <td>Legon Taxi Station</td>
-                    </tr>
-                    <tr className={'text-left'}>
-                      <td>1</td>
-                      <td>GR-1234-20</td>
-                      <td>Toyota Yaris</td>
-                      <td>4Y1SL65848Z411439</td>
-                      <td>James Martey</td>
-                      <td>Legon Taxi Station</td>
-                    </tr>
-                  </tbody>
-                </table>
+                <div>
+                  <h3>Registered Taxis</h3>
+                </div>
+                <div className={'mt-2'}>
+                  {taxis.length > 0 ? (
+                    <table className={'table w-full'}>
+                      <tr className={'text-left'}>
+                        <th className={'font-semibold'}>ID</th>
+                        <th className={'font-semibold'}>Registration</th>
+                        <th className={'font-semibold'}>Brand</th>
+                        <th className={'font-semibold'}>VIN</th>
+                        <th className={'font-semibold'}>Driver</th>
+                        <th className={'font-semibold'}>Taxi Local</th>
+                      </tr>
+                      <tbody>
+                        <tr className={'text-left'}>
+                          <td>1</td>
+                          <td>GR-1234-20</td>
+                          <td>Toyota Yaris</td>
+                          <td>4Y1SL65848Z411439</td>
+                          <td>James Martey</td>
+                          <td>Legon Taxi Station</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  ) : (
+                    <div className={'flex justify-center items-center'}>
+                      <h3>No station registered</h3>
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
           </section>

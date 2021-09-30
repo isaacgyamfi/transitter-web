@@ -1,4 +1,5 @@
 import React, { Fragment, useContext } from 'react';
+import { Bar } from 'react-chartjs-2';
 import Sidebar from '../../layouts/global/Sidebar';
 // import { AuthContext } from '../../../contexts/AuthContext';
 import { Redirect } from 'react-router';
@@ -26,6 +27,49 @@ export default function Dashboard() {
               </div>
               <div>
                 <SummaryAnalytics />
+              </div>
+              <div className={'w-2/3 rounded-md shadow bg-white p-5 mt-2'}>
+                <div>
+                  <h3>Complaints</h3>
+                </div>
+                <Bar
+                  data={{
+                    labels: [
+                      'Jan',
+                      'Feb',
+                      'Mar',
+                      'Apr',
+                      'May',
+                      'Jun',
+                      'Jul',
+                      'Aug',
+                      'Sep',
+                      'Oct',
+                      'Nov',
+                      'Dec',
+                    ],
+                    datasets: [
+                      {
+                        label: 'Number of Complaints',
+                        data: [12, 19, 3, 5, 2, 3],
+                        backgroundColor: ['rgba(30, 64, 175, 0.10)'],
+                        borderColor: ['rgb(30, 64, 175)'],
+                        borderWidth: 1,
+                      },
+                    ],
+                  }}
+                  options={{
+                    scales: {
+                      yAxes: [
+                        {
+                          ticks: {
+                            beginAtZero: true,
+                          },
+                        },
+                      ],
+                    },
+                  }}
+                />
               </div>
             </div>
           </section>

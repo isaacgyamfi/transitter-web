@@ -2,7 +2,7 @@ import SummaryAnalyticsCard from './SummaryAnalyticsCard';
 
 export default function SummaryAnalytics() {
   return (
-    <div className={'flex flex-row w-full lg:w-2/3 flex-wrap'}>
+    <div className={'flex flex-row w-full flex-wrap'}>
       <SummaryAnalyticsCard
         title={'Stations'}
         count={235}
