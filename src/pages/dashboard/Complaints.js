@@ -67,8 +67,35 @@ export default function Complaints() {
               </div>
               <div>
                 <div className={'flex flex-row'}>
-                  <div className={'rounded-md shadow bg-white p-5 w-2/3'}>
-                    <div></div>
+                  <div className={'rounded-md shadow bg-white p-5 w-full'}>
+                    <div>
+                      <h3>Reported cases</h3>
+                    </div>
+                    <div>
+                      <table className="w-full">
+                        <thead>
+                          <tr>
+                            <th className={'text-left p'}>Case No.</th>
+                            <th className={'text-left p'}>Reporter</th>
+                            <th className={'text-left p'}>Status</th>
+                            <th className={'text-left p'}>Type</th>
+                            <th className={'text-left p'}>Subject</th>
+                            <th className={'text-left p'}>Vehicle</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td className={'py-2'}></td>
+                            <td className={'py-2'}></td>
+                            <td className={'py-2'}></td>
+                            <td className={'py-2'}></td>
+                            <td className={'py-2'}></td>
+                            <td className={'py-2'}></td>
+                            <td className={'py-2'}></td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
                   </div>
                 </div>
               </div>
