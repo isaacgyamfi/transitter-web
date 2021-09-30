@@ -13,7 +13,6 @@ export default function Taxis() {
 
   const loadTaxis = async () => {
     const response = await axios.get('http://localhost:5000/taxis');
-    console.log(response.data.data);
     return setTaxis(response.data.data);
   };
 
@@ -76,7 +75,7 @@ export default function Taxis() {
                       </tr>
                       <tbody>
                         {taxis.map((item, index) => (
-                          <tr className={'text-left'}>
+                          <tr key={index} className={'text-left'}>
                             <td>1</td>
                             <td>{item.registrationNumber}</td>
                             <td>

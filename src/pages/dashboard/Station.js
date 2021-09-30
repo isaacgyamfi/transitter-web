@@ -78,7 +78,7 @@ export default function Stations() {
                       </tr>
                       <tbody>
                         {stations.map((item, index) => (
-                          <tr className={'text-left'}>
+                          <tr key={index} className={'text-left'}>
                             <td>{index + 1}</td>
                             <td>{item.address.name}</td>
                             <td>{item.address.vicinity}</td>

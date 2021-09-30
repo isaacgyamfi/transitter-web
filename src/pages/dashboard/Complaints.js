@@ -1,4 +1,5 @@
-import React, { Fragment, useState } from 'react';
+import axios from 'axios';
+import React, { Fragment, useEffect, useState } from 'react';
 import SummaryAnalyticsCard from '../../components/dashboard/SummaryAnalyticsCard';
 import Sidebar from '../../layouts/global/Sidebar';
 
@@ -35,6 +36,17 @@ const caseTypes = [
 
 export default function Complaints() {
   const [complaints, setComplaints] = useState([]);
+
+  const loadComplaints = async () => {
+    const response = await axios.get('http://localhost:5000/complaints');
+    console.log(response.data.data);
+    return setComplaints(response.data.data);
+  };
+
+  useEffect(() => {
+    loadComplaints();
+  }, []);
+
   return (
     <Fragment>
       <div>
@@ -112,21 +124,49 @@ export default function Complaints() {
                           <tr className={'border-b border-gray-400'}>
                             <th className={'text-left p'}>Case No.</th>
                             <th className={'text-left p'}>Reporter</th>
+                            <th className={'text-left p'}>Contact</th>
                             <th className={'text-left p'}>Status</th>
                             <th className={'text-left p'}>Type</th>
                             <th className={'text-left p'}>Subject</th>
                             <th className={'text-left p'}>Vehicle</th>
                           </tr>
                           <tbody>
-                            <tr>
-                              <td className={'py-2'}></td>
-                              <td className={'py-2'}></td>
-                              <td className={'py-2'}></td>
-                              <td className={'py-2'}></td>
-                              <td className={'py-2'}></td>
-                              <td className={'py-2'}></td>
-                              <td className={'py-2'}></td>
-                            </tr>
+                            {complaints.map((item, index) => (
+                              <tr>
+                                <td className={'py-2'}>{index + 1}</td>
+                                <td className={'py-2'}>{item.user.name}</td>
+                                <td className={'py-2'}>{item.user.phone}</td>
+                                <td className={'py-2'}>
+                                  {item.status === 'NOT RESOLVED' ? (
+                                    <i
+                                      className={
+                                        'text-yellow-500 text-lg fas fa-exclamation-circle'
+                                      }
+                                    />
+                                  ) : item.status === 'RESOLVED' ? (
+                                    <i
+                                      className={
+                                        'text-green-600 text-lg fas fa-check-circle'
+                                      }
+                                    />
+                                  ) : null}
+                                </td>
+                                <td className={'py-2'}>{item.type}</td>
+                                <td className={'py-2'}>{item.subject}</td>
+                                <td className={'py-2'}>
+                                  {item.registrationNumber}
+                                </td>
+                                <td className={'py-2'}>
+                                  <button
+                                    className={
+                                      'text-blue-800 border border-blue-800 shadow px-2 py-1 text-sm rounded'
+                                    }
+                                  >
+                                    View
+                                  </button>
+                                </td>
+                              </tr>
+                            ))}
                           </tbody>
                         </table>
                       ) : (

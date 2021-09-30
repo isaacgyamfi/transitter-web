@@ -76,7 +76,7 @@ export default function Drivers() {
                       </tr>
                       <tbody>
                         {drivers.map((item, index) => (
-                          <tr className={'text-left'}>
+                          <tr key={index} className={'text-left'}>
                             <td>1</td>
                             <td>{item.name}</td>
                             <td>{item.phone}</td>
