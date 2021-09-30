@@ -1,19 +1,25 @@
-import React, { Fragment, useContext, useState } from 'react';
+import React, { Fragment, useContext, useEffect, useState } from 'react';
 import Sidebar from '../../layouts/global/Sidebar';
 import { Redirect } from 'react-router';
 import AddTaxi from '../../components/modals/AddTaxi';
+import axios from 'axios';
 
 export default function Taxis() {
   //   const { state } = useContext(AuthContext);
   const [modalIsOpen, setIsOpen] = useState(false);
   const [taxis, setTaxis] = useState([]);
-  function openModal() {
-    setIsOpen(true);
-  }
+  const openModal = () => setIsOpen(true);
+  const closeModal = () => setIsOpen(false);
 
-  function closeModal() {
-    setIsOpen(false);
-  }
+  const loadTaxis = async () => {
+    const response = await axios.get('http://localhost:5000/taxis');
+    console.log(response.data.data);
+    return setTaxis(response.data.data);
+  };
+
+  useEffect(() => {
+    loadTaxis();
+  }, []);
 
   return (
     <Fragment>
@@ -31,9 +37,7 @@ export default function Taxis() {
               <div
                 className={'mb-5 flex flex-row justify-between items-center'}
               >
-                <h3 className={'font-medium text-xl text-gray-500'}>
-                  Stations
-                </h3>
+                <h3 className={'font-medium text-xl text-gray-500'}>Taxis</h3>
                 <div className={'flex flex-row justify-between items-center'}>
                   <button
                     onClick={() => openModal()}
@@ -71,14 +75,18 @@ export default function Taxis() {
                         <th className={'font-semibold'}>Taxi Local</th>
                       </tr>
                       <tbody>
-                        <tr className={'text-left'}>
-                          <td>1</td>
-                          <td>GR-1234-20</td>
-                          <td>Toyota Yaris</td>
-                          <td>4Y1SL65848Z411439</td>
-                          <td>James Martey</td>
-                          <td>Legon Taxi Station</td>
-                        </tr>
+                        {taxis.map((item, index) => (
+                          <tr className={'text-left'}>
+                            <td>1</td>
+                            <td>{item.registrationNumber}</td>
+                            <td>
+                              {item.brand} {item.model}
+                            </td>
+                            <td>{item.vin}</td>
+                            <td>{item.driver}</td>
+                            <td>{item.station.address.name}</td>
+                          </tr>
+                        ))}
                       </tbody>
                     </table>
                   ) : (

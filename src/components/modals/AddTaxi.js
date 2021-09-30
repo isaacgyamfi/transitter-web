@@ -9,7 +9,7 @@ import { Formik } from 'formik';
 Modal.setAppElement('#root');
 
 export default function AddTaxi({ modalIsOpen, closeModal }) {
-  console.log(cars.filter((brand) => brand.models));
+  // console.log(cars.filter((brand) => brand.models));
   const createTaxi = (values, actions) => {
     console.log(values);
   };

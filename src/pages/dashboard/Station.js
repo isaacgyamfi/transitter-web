@@ -13,7 +13,6 @@ export default function Stations() {
 
   const loadStations = async () => {
     const response = await axios.get('http://localhost:5000/stations');
-    console.log(response.data.data);
     return setStations(response.data.data);
   };
 
