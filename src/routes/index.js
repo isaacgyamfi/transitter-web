@@ -2,6 +2,7 @@ import React from 'react';
 import { Route, Redirect, Switch } from 'react-router-dom';
 import Login from '../pages/auth/Login';
 import Dashboard from '../pages/dashboard';
+import Complaints from '../pages/dashboard/Complaints';
 import Drivers from '../pages/dashboard/Drivers';
 import Stations from '../pages/dashboard/Station';
 import Taxis from '../pages/dashboard/Taxis';
@@ -19,6 +20,11 @@ export default function AppNavigation() {
       <Route path="/dashboard/drivers" exact render={(props) => <Drivers />} />
       <Route path="/dashboard/complains" exact render={(props) => <Login />} />
       <Route path="/dashboard/taxis" exact render={(props) => <Taxis />} />
+      <Route
+        path="/dashboard/complaints"
+        exact
+        render={(props) => <Complaints />}
+      />
     </Switch>
   );
 }

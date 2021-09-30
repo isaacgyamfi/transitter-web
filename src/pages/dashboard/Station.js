@@ -6,13 +6,9 @@ import AddStation from '../../components/modals/AddStation';
 export default function Stations() {
   //   const { state } = useContext(AuthContext);
   const [modalIsOpen, setIsOpen] = useState(false);
-  function openModal() {
-    setIsOpen(true);
-  }
+  const openModal = () => setIsOpen(true);
+  const closeModal = () => setIsOpen(false);
 
-  function closeModal() {
-    setIsOpen(false);
-  }
   return (
     <Fragment>
       {/* {state.isAuth ? <Redirect to="/dashboard" /> : <Redirect to="/login" />} */}
