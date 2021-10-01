@@ -3,52 +3,95 @@ import Modal from 'react-modal';
 import { Formik } from 'formik';
 
 import towns from '../../assets/towns.json';
+import axios from 'axios';
 
 Modal.setAppElement('#root');
 
-export default function AddStation({ stationModal, closeStationModal }) {
-  const createStation = (values, actions) => {
+export default function AddPlace({ placeModal, closePlaceModal }) {
+  const createPlace = async (values, actions) => {
     console.log(values);
+    const response = await axios.post(
+      `${
+        process.env.NODE_ENV === 'development'
+          ? process.env.REACT_APP_DEV_API_BASE_URL
+          : null
+      }/places/add`,
+      {
+        name: values.name,
+        region: values.region,
+        vicinity: values.vicinity,
+        type: values.type,
+        geometry: {
+          location: {
+            lng: values.longitude,
+            lat: values.latitude,
+          },
+        },
+      },
+    );
+    closePlaceModal();
+    console.log(response);
   };
   return (
     <Modal
-      isOpen={stationModal}
-      onRequestClose={closeStationModal}
+      isOpen={placeModal}
+      onRequestClose={closePlaceModal}
       style={customStyles}
       contentLabel="Example Modal"
     >
       <Formik
         initialValues={{
           name: '',
+          type: '',
           vicinity: '',
           region: '',
-          gps: '',
           longitude: '',
           latitude: '',
         }}
-        onSubmit={(values, actions) => createStation(values, actions)}
+        onSubmit={(values, actions) => createPlace(values, actions)}
       >
         {(props) => {
           return (
             <div>
               <div>
-                <h3 className={'text-xl font-semibold'}>
-                  Add new taxi station
-                </h3>
+                <h3 className={'text-xl font-semibold'}>Save a new place</h3>
               </div>
               <hr className={'my-2'} />
               <div>
                 <h3 className={'text-sm'}>Place details</h3>
               </div>
-              <div className={'p-2 w-full'}>
-                <label className={'w-full'}>Name</label>
-                <input
-                  name={'name'}
-                  type={'text'}
-                  className={'w-full mt-1 bg-gray-200 p-3'}
-                  value={props.values.name}
-                  onChange={props.handleChange('name')}
-                />
+              <div className={'flex flex-row'}>
+                <div className={'p-2 w-full'}>
+                  <label className={'w-full'}>Name</label>
+                  <input
+                    name={'name'}
+                    type={'text'}
+                    className={'w-full mt-1 bg-gray-200 p-3'}
+                    value={props.values.name}
+                    onChange={props.handleChange('name')}
+                  />
+                </div>
+                <div className={'p-2 w-1/2'}>
+                  <label className={'w-full'}>Place type</label>
+                  <select
+                    name={'type'}
+                    className={'w-full mt-1 bg-gray-200 p-3'}
+                    value={props.values.type}
+                    onChange={props.handleChange('type')}
+                  >
+                    <option>Select one</option>
+                    {[
+                      'taxi station',
+                      'bus stop',
+                      'establishment',
+                      'bus station',
+                    ].map((item, index) => (
+                      <option key={index} value={item}>
+                        {item}
+                      </option>
+                    ))}
+                  </select>
+                </div>
               </div>
               <div className={'flex flex-row'}>
                 <div className={'p-2 w-1/2'}>
@@ -87,17 +130,7 @@ export default function AddStation({ stationModal, closeStationModal }) {
                 </div>
               </div>
               <div className={'flex flex-row'}>
-                <div className={'p-2 w-1/3'}>
-                  <label className={'w-full'}>GPS Address</label>
-                  <input
-                    name={'gps'}
-                    type={'text'}
-                    className={'w-full mt-1 bg-gray-200 p-3'}
-                    value={props.values.gps}
-                    onChange={props.handleChange('gps')}
-                  />
-                </div>
-                <div className={'p-2 w-1/3'}>
+                <div className={'p-2 w-1/2'}>
                   <label className={'w-full'}>longitude</label>
                   <input
                     name={'longitude'}
@@ -107,7 +140,7 @@ export default function AddStation({ stationModal, closeStationModal }) {
                     onChange={props.handleChange('longitude')}
                   />
                 </div>
-                <div className={'p-2 w-1/3'}>
+                <div className={'p-2 w-1/2'}>
                   <label className={'w-full'}>latitude</label>
                   <input
                     name={'latitude'}
@@ -118,36 +151,6 @@ export default function AddStation({ stationModal, closeStationModal }) {
                   />
                 </div>
               </div>
-              <div>
-                <h3 className={'text-sm'}>Station details</h3>
-              </div>
-              <div className={'flex flex-row items-end'}>
-                <div className={'p-2 w-1/2'}>
-                  <label className={'w-full'}>Destination</label>
-                  <input
-                    name={'destination'}
-                    type={'text'}
-                    className={'w-full mt-1 bg-gray-200 p-3'}
-                  />
-                </div>
-                <div className={'p-2 w-1/2'}>
-                  <label className={'w-full'}>Fare</label>
-                  <input
-                    name={'amount'}
-                    type={'number'}
-                    className={'w-full mt-1 bg-gray-200 p-3'}
-                  />
-                </div>
-                <div className={'p-2 w-auto'}>
-                  <button
-                    className={
-                      'text-white bg-blue-800 shadow px-3 py-2 text-sm rounded'
-                    }
-                  >
-                    Add
-                  </button>
-                </div>
-              </div>
               <div className={'p-2 w-auto'}>
                 <button
                   type={'button'}
@@ -156,10 +159,10 @@ export default function AddStation({ stationModal, closeStationModal }) {
                     ' mr-2 text-white bg-blue-800 shadow px-3 py-2 text-sm rounded'
                   }
                 >
-                  Save as station
+                  Save as place
                 </button>
                 <button
-                  onClick={closeStationModal}
+                  onClick={closePlaceModal}
                   className={
                     'text-blue-800 border border-blue-800 shadow px-3 py-2 text-sm rounded'
                   }

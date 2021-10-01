@@ -38,7 +38,13 @@ export default function Complaints() {
   const [complaints, setComplaints] = useState([]);
 
   const loadComplaints = async () => {
-    const response = await axios.get('http://localhost:5000/complaints');
+    const response = await axios.get(
+      `${
+        process.env.NODE_ENV === 'development'
+          ? process.env.REACT_APP_DEV_API_BASE_URL
+          : null
+      }/complaints`,
+    );
     console.log(response.data.data);
     return setComplaints(response.data.data);
   };
@@ -52,10 +58,10 @@ export default function Complaints() {
       <div>
         <main className={'flex flex-col lg:flex-row'}>
           <Sidebar />
-          <section className={'lg:w-full bg-gray-100 h-screen'}>
+          <section className={'lg:w-full bg-gray-200 h-screen'}>
             <div
               className={
-                'w-full px-5 py-5 lg:pl-72 lg:pt-10 lg:pr-10 bg-gray-100'
+                'w-full px-5 py-5 lg:pl-72 lg:pt-10 lg:pr-10 bg-gray-200'
               }
             >
               <div
@@ -121,14 +127,14 @@ export default function Complaints() {
                     <div className={'mt-2'}>
                       {complaints.length > 0 ? (
                         <table className="table-auto w-full">
-                          <tr className={'border-b border-gray-400'}>
-                            <th className={'text-left p'}>Case No.</th>
-                            <th className={'text-left p'}>Reporter</th>
-                            <th className={'text-left p'}>Contact</th>
-                            <th className={'text-left p'}>Status</th>
-                            <th className={'text-left p'}>Type</th>
-                            <th className={'text-left p'}>Subject</th>
-                            <th className={'text-left p'}>Vehicle</th>
+                          <tr className={'border-b border-gray-400 text-left'}>
+                            <th className={'font-semibold'}>Case No.</th>
+                            <th className={'font-semibold'}>Reporter</th>
+                            <th className={'font-semibold'}>Contact</th>
+                            <th className={'font-semibold'}>Status</th>
+                            <th className={'font-semibold'}>Type</th>
+                            <th className={'font-semibold'}>Subject</th>
+                            <th className={'font-semibold'}>Vehicle</th>
                           </tr>
                           <tbody>
                             {complaints.map((item, index) => (

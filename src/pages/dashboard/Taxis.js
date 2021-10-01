@@ -12,7 +12,13 @@ export default function Taxis() {
   const closeModal = () => setIsOpen(false);
 
   const loadTaxis = async () => {
-    const response = await axios.get('http://localhost:5000/taxis');
+    const response = await axios.get(
+      `${
+        process.env.NODE_ENV === 'development'
+          ? process.env.REACT_APP_DEV_API_BASE_URL
+          : null
+      }/taxis`,
+    );
     return setTaxis(response.data.data);
   };
 
@@ -27,10 +33,10 @@ export default function Taxis() {
       <div>
         <main className={'flex flex-col lg:flex-row'}>
           <Sidebar />
-          <section className={'lg:w-full bg-gray-100 h-screen'}>
+          <section className={'lg:w-full bg-gray-200 h-screen'}>
             <div
               className={
-                'w-full px-5 py-5 lg:pl-72 lg:pt-10 lg:pr-10 bg-gray-100'
+                'w-full px-5 py-5 lg:pl-72 lg:pt-10 lg:pr-10 bg-gray-200'
               }
             >
               <div
@@ -64,10 +70,11 @@ export default function Taxis() {
                 </div>
                 <div className={'mt-2'}>
                   {taxis.length > 0 ? (
-                    <table className={'table w-full'}>
+                    <table className={'table-auto w-full'}>
                       <tr className={'text-left'}>
                         <th className={'font-semibold'}>ID</th>
                         <th className={'font-semibold'}>Registration</th>
+                        <th className={'font-semibold'}>Color</th>
                         <th className={'font-semibold'}>Brand</th>
                         <th className={'font-semibold'}>VIN</th>
                         <th className={'font-semibold'}>Driver</th>
@@ -78,6 +85,26 @@ export default function Taxis() {
                           <tr key={index} className={'text-left'}>
                             <td>1</td>
                             <td>{item.registrationNumber}</td>
+                            <td className={'flex flex-row items-center'}>
+                              <div
+                                className={'w-5 h-5 border border-black'}
+                                style={{
+                                  backgroundColor: item.colorCode.fender,
+                                }}
+                              />
+                              <div
+                                className={'w-5 h-5 border border-black'}
+                                style={{
+                                  backgroundColor: item.colorCode.doors,
+                                }}
+                              />
+                              <div
+                                className={'w-5 h-5 border border-black'}
+                                style={{
+                                  backgroundColor: item.colorCode.fender,
+                                }}
+                              />
+                            </td>
                             <td>
                               {item.brand} {item.model}
                             </td>

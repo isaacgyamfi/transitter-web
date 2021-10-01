@@ -3,16 +3,26 @@ import Sidebar from '../../layouts/global/Sidebar';
 import { Redirect } from 'react-router';
 import AddStation from '../../components/modals/AddStation';
 import axios from 'axios';
+import AddPlace from '../../components/modals/AddPlace';
 
 export default function Stations() {
   //   const { state } = useContext(AuthContext);
-  const [modalIsOpen, setIsOpen] = useState(false);
+  const [stationModal, setStationModal] = useState(false);
+  const [placeModal, setPlaceModal] = useState(false);
   const [stations, setStations] = useState([]);
-  const openModal = () => setIsOpen(true);
-  const closeModal = () => setIsOpen(false);
+  const openStationModal = () => setStationModal(true);
+  const closeStationModal = () => setStationModal(false);
+  const openPlaceModal = () => setPlaceModal(true);
+  const closePlaceModal = () => setPlaceModal(false);
 
   const loadStations = async () => {
-    const response = await axios.get('http://localhost:5000/stations');
+    const response = await axios.get(
+      `${
+        process.env.NODE_ENV === 'development'
+          ? process.env.REACT_APP_DEV_API_BASE_URL
+          : null
+      }/stations`,
+    );
     return setStations(response.data.data);
   };
 
@@ -23,14 +33,18 @@ export default function Stations() {
   return (
     <Fragment>
       {/* {state.isAuth ? <Redirect to="/dashboard" /> : <Redirect to="/login" />} */}
-      <AddStation modalIsOpen={modalIsOpen} closeModal={closeModal} />
+      <AddStation
+        stationModal={stationModal}
+        closeStationModal={closeStationModal}
+      />
+      <AddPlace placeModal={placeModal} closePlaceModal={closePlaceModal} />
       <div>
         <main className={'flex flex-col lg:flex-row'}>
           <Sidebar />
-          <section className={'lg:w-full bg-gray-100 h-screen'}>
+          <section className={'lg:w-full bg-gray-200 h-screen'}>
             <div
               className={
-                'w-full px-5 py-5 lg:pl-72 lg:pt-10 lg:pr-10 bg-gray-100'
+                'w-full px-5 py-5 lg:pl-72 lg:pt-10 lg:pr-10 bg-gray-200'
               }
             >
               <div
@@ -41,7 +55,7 @@ export default function Stations() {
                 </h3>
                 <div className={'flex flex-row justify-between items-center'}>
                   <button
-                    onClick={() => openModal()}
+                    onClick={() => openStationModal()}
                     className={
                       'mr-2 text-white bg-blue-800 shadow px-3 py-2 rounded'
                     }
@@ -49,11 +63,12 @@ export default function Stations() {
                     Add a station
                   </button>
                   <button
+                    onClick={() => openPlaceModal()}
                     className={
                       'text-blue-800 border border-blue-800 shadow px-3 py-2 rounded'
                     }
                   >
-                    Add a taxi
+                    Add a place
                   </button>
                 </div>
               </div>
@@ -66,7 +81,7 @@ export default function Stations() {
                 </div>
                 <div className={'mt-2'}>
                   {stations.length > 0 ? (
-                    <table className={'table w-full'}>
+                    <table className={'table-auto w-full'}>
                       <tr className={'text-left'}>
                         <th className={'font-semibold'}>ID</th>
                         <th className={'font-semibold'}>Name</th>

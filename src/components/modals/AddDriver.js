@@ -1,5 +1,6 @@
+import axios from 'axios';
 import { Formik } from 'formik';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Modal from 'react-modal';
 
 import towns from '../../assets/towns.json';
@@ -7,10 +8,57 @@ import towns from '../../assets/towns.json';
 Modal.setAppElement('#root');
 
 export default function AddDriver({ modalIsOpen, closeModal }) {
-  const createDriver = (values, actions) => {
+  const [taxis, setTaxis] = useState([]);
+  const [stations, setStations] = useState([]);
+  const loadRegisteredTaxis = async () => {
+    const response = await axios.get(
+      `${
+        process.env.NODE_ENV === 'development'
+          ? process.env.REACT_APP_DEV_API_BASE_URL
+          : null
+      }/taxis`,
+    );
+    console.log(response.data.data);
+    return setTaxis(response.data.data);
+  };
+  const loadRegisteredStations = async () => {
+    const response = await axios.get(
+      `${
+        process.env.NODE_ENV === 'development'
+          ? process.env.REACT_APP_DEV_API_BASE_URL
+          : null
+      }/stations`,
+    );
+    console.log(response.data.data);
+    return setStations(response.data.data);
+  };
+  const createDriver = async (values, actions) => {
     console.log(values);
+    const response = await axios.post(
+      `${
+        process.env.NODE_ENV === 'development'
+          ? process.env.REACT_APP_DEV_API_BASE_URL
+          : null
+      }/drivers/add`,
+      {
+        name: values.name,
+        phone: values.phone,
+        email: values.email,
+        address: values.address,
+        taxi: values.registrationNumber,
+        taxiLocal: values.station,
+      },
+    );
+    closeModal();
+    console.log(response);
   };
   //   console.log(cars.filter((brand) => brand.models));
+
+  useEffect(() => {
+    loadRegisteredStations();
+    loadRegisteredTaxis();
+  }, []);
+
   return (
     <Modal
       isOpen={modalIsOpen}
@@ -35,9 +83,9 @@ export default function AddDriver({ modalIsOpen, closeModal }) {
               <div className={'p-2 w-full'}>
                 <label className={'w-full'}>Full name</label>
                 <input
-                  name={'registrationNumber'}
+                  name={'name'}
                   type={'text'}
-                  className={'w-full mt-1 bg-gray-100 p-3'}
+                  className={'w-full mt-1 bg-gray-200 p-3'}
                   onChange={props.handleChange('name')}
                   onBlur={props.handleBlur('name')}
                   value={props.values.name}
@@ -48,8 +96,8 @@ export default function AddDriver({ modalIsOpen, closeModal }) {
                   <label className={'w-full'}>Phone</label>
                   <input
                     name={'phone'}
-                    type={'text'}
-                    className={'w-full mt-1 bg-gray-100 p-3'}
+                    type={'tel'}
+                    className={'w-full mt-1 bg-gray-200 p-3'}
                     onChange={props.handleChange('phone')}
                     onBlur={props.handleBlur('phone')}
                     value={props.values.phone}
@@ -60,7 +108,7 @@ export default function AddDriver({ modalIsOpen, closeModal }) {
                   <input
                     name={'email'}
                     type={'text'}
-                    className={'w-full mt-1 bg-gray-100 p-3'}
+                    className={'w-full mt-1 bg-gray-200 p-3'}
                     onChange={props.handleChange('email')}
                     onBlur={props.handleBlur('email')}
                     value={props.values.email}
@@ -71,23 +119,53 @@ export default function AddDriver({ modalIsOpen, closeModal }) {
                 <label className={'w-full'}>Address</label>
                 <textarea
                   name={'address'}
-                  className={'w-full mt-1 bg-gray-100 p-3'}
+                  className={'w-full mt-1 bg-gray-200 p-3'}
                   onChange={props.handleChange('address')}
                   onBlur={props.handleBlur('address')}
                   value={props.values.address}
                 />
               </div>
               <div>
-                <h3 className={'text-sm'}>Station details</h3>
+                <h3 className={'text-sm'}>Other details</h3>
               </div>
-              <div className={'flex flex-row items-end'}>
+              <div className={'flex flex-row items-center'}>
                 <div className={'p-2 w-full'}>
                   <label className={'w-full'}>Assign station</label>
-                  <input
-                    name={'destination'}
-                    type={'text'}
-                    className={'w-full mt-1 bg-gray-100 p-3'}
-                  />
+                  <select
+                    name={'type'}
+                    className={'w-full mt-1 bg-gray-200 p-3'}
+                    value={props.values.station}
+                    onChange={props.handleChange('station')}
+                  >
+                    <option>Select one</option>
+                    {stations
+                      ? stations.map((item, index) => (
+                          <option key={index} value={item.address.name}>
+                            {item.address.name}
+                            {', '}
+                            {item.address.vicinity}
+                          </option>
+                        ))
+                      : null}
+                  </select>
+                </div>
+                <div className={'p-2 w-full'}>
+                  <label className={'w-full'}>Link to taxi</label>
+                  <select
+                    name={'type'}
+                    className={'w-full mt-1 bg-gray-200 p-3'}
+                    value={props.values.registrationNumber}
+                    onChange={props.handleChange('registrationNumber')}
+                  >
+                    <option>Select one</option>
+                    {taxis
+                      ? taxis.map((item, index) => (
+                          <option key={index} value={item.registrationNumber}>
+                            {item.registrationNumber}
+                          </option>
+                        ))
+                      : null}
+                  </select>
                 </div>
               </div>
               <div className={'p-2 w-auto'}>

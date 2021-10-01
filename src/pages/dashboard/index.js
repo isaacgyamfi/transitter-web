@@ -14,10 +14,10 @@ export default function Dashboard() {
       <div>
         <main className={'flex flex-col lg:flex-row'}>
           <Sidebar />
-          <section className={'lg:w-full bg-gray-100 h-screen'}>
+          <section className={'lg:w-full bg-gray-200 h-screen'}>
             <div
               className={
-                'w-full px-5 py-5 lg:pl-72 lg:pt-10 lg:pr-10 bg-gray-100'
+                'w-full px-5 py-5 lg:pl-72 lg:pt-10 lg:pr-10 bg-gray-200'
               }
             >
               <div className={'mb-5'}>

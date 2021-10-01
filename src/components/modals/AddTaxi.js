@@ -1,18 +1,61 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Modal from 'react-modal';
 import { regionCode, year } from '../../assets/numberPlates';
 
 import towns from '../../assets/towns.json';
 import cars from '../../assets/car-brands.json';
 import { Formik } from 'formik';
+import axios from 'axios';
 
 Modal.setAppElement('#root');
 
 export default function AddTaxi({ modalIsOpen, closeModal }) {
   // console.log(cars.filter((brand) => brand.models));
-  const createTaxi = (values, actions) => {
-    console.log(values);
+  const [stations, setStations] = useState([]);
+  const loadRegisteredStations = async () => {
+    const response = await axios.get(
+      `${
+        process.env.NODE_ENV === 'development'
+          ? process.env.REACT_APP_DEV_API_BASE_URL
+          : null
+      }/stations`,
+    );
+    console.log(response.data.data);
+    return setStations(response.data.data);
   };
+  const createTaxi = async (values, actions) => {
+    console.log(values);
+    const response = await axios.post(
+      `${
+        process.env.NODE_ENV === 'development'
+          ? process.env.REACT_APP_DEV_API_BASE_URL
+          : null
+      }/taxis/add`,
+      {
+        registrationNumber: `${values.region}-${values.carNumber}-${values.year}`,
+        brand: values.brand,
+        model: values.model,
+        vin: values.vin,
+        owner: {
+          name: values.ownerName,
+          contact: values.ownerContact,
+          address: values.ownerAddress,
+        },
+        station: values.station,
+        colorCode: {
+          fender: values.fender,
+          doors: values.doors,
+        },
+      },
+    );
+    closeModal();
+    console.log(response);
+  };
+
+  useEffect(() => {
+    loadRegisteredStations();
+  }, []);
+
   return (
     <Modal
       isOpen={modalIsOpen}
@@ -49,7 +92,7 @@ export default function AddTaxi({ modalIsOpen, closeModal }) {
                   <label className={'w-full'}>Registration Number</label>
                   <div className={'flex flex-row'}>
                     <select
-                      className={'bg-gray-100'}
+                      className={'bg-gray-200'}
                       name={'region'}
                       value={props.values.region}
                       onChange={props.handleChange('region')}
@@ -61,13 +104,14 @@ export default function AddTaxi({ modalIsOpen, closeModal }) {
                     </select>
                     <input
                       name={'carNumber'}
-                      type={'text'}
-                      className={'w-full mt-1 bg-gray-100 p-3'}
+                      type={'number'}
+                      min="1"
+                      className={'w-full mt-1 bg-gray-200 p-3'}
                       onChange={props.handleChange('carNumber')}
                       value={props.values.carNumber}
                     />
                     <select
-                      className={'bg-gray-100'}
+                      className={'bg-gray-200'}
                       name={'year'}
                       value={props.values.year}
                       onChange={props.handleChange('year')}
@@ -84,7 +128,7 @@ export default function AddTaxi({ modalIsOpen, closeModal }) {
                   <input
                     name={'vin'}
                     type={'text'}
-                    className={'w-full mt-1 bg-gray-100 p-3'}
+                    className={'w-full mt-1 bg-gray-200 p-3'}
                     onChange={props.handleChange('vin')}
                     value={props.values.vin}
                   />
@@ -95,7 +139,7 @@ export default function AddTaxi({ modalIsOpen, closeModal }) {
                   <label className={'w-full'}>Brand</label>
                   <select
                     name={'brand'}
-                    className={'w-full mt-1 bg-gray-100 p-3'}
+                    className={'w-full mt-1 bg-gray-200 p-3'}
                     value={props.values.brand}
                     onChange={props.handleChange('brand')}
                   >
@@ -110,7 +154,7 @@ export default function AddTaxi({ modalIsOpen, closeModal }) {
                   <label className={'w-full'}>Model</label>
                   <select
                     name={'model'}
-                    className={'w-full mt-1 bg-gray-100 p-3'}
+                    className={'w-full mt-1 bg-gray-200 p-3'}
                     value={props.values.model}
                     onChange={props.handleChange('model')}
                   >
@@ -129,7 +173,7 @@ export default function AddTaxi({ modalIsOpen, closeModal }) {
                   <input
                     name={'ownerName'}
                     type={'text'}
-                    className={'w-full mt-1 bg-gray-100 p-3'}
+                    className={'w-full mt-1 bg-gray-200 p-3'}
                     onChange={props.handleChange('ownerName')}
                     value={props.values.ownerName}
                   />
@@ -139,7 +183,7 @@ export default function AddTaxi({ modalIsOpen, closeModal }) {
                   <input
                     name={'ownerContact'}
                     type={'number'}
-                    className={'w-full mt-1 bg-gray-100 p-3'}
+                    className={'w-full mt-1 bg-gray-200 p-3'}
                     onChange={props.handleChange('ownerContact')}
                     value={props.values.ownerContact}
                   />
@@ -149,7 +193,7 @@ export default function AddTaxi({ modalIsOpen, closeModal }) {
                   <input
                     name={'ownerAddress'}
                     type={'text'}
-                    className={'w-full mt-1 bg-gray-100 p-3'}
+                    className={'w-full mt-1 bg-gray-200 p-3'}
                     onChange={props.handleChange('ownerAddress')}
                     value={props.values.ownerAddress}
                   />
@@ -161,11 +205,23 @@ export default function AddTaxi({ modalIsOpen, closeModal }) {
               <div className={'flex flex-row items-end'}>
                 <div className={'p-2 w-full'}>
                   <label className={'w-full'}>Assign station</label>
-                  <input
-                    name={'destination'}
-                    type={'text'}
-                    className={'w-full mt-1 bg-gray-100 p-3'}
-                  />
+                  <select
+                    name={'type'}
+                    className={'w-full mt-1 bg-gray-200 p-3'}
+                    value={props.values.station}
+                    onChange={props.handleChange('station')}
+                  >
+                    <option>Select one</option>
+                    {stations
+                      ? stations.map((item, index) => (
+                          <option key={index} value={item.address.name}>
+                            {item.address.name}
+                            {', '}
+                            {item.address.vicinity}
+                          </option>
+                        ))
+                      : null}
+                  </select>
                 </div>
               </div>
               <div className={'p-2 w-auto'}>

@@ -12,7 +12,13 @@ export default function Drivers() {
   const closeModal = () => setIsOpen(false);
 
   const loadDrivers = async () => {
-    const response = await axios.get('http://localhost:5000/drivers');
+    const response = await axios.get(
+      `${
+        process.env.NODE_ENV === 'development'
+          ? process.env.REACT_APP_DEV_API_BASE_URL
+          : null
+      }/drivers`,
+    );
     console.log(response.data.data);
     return setDrivers(response.data.data);
   };
@@ -28,10 +34,10 @@ export default function Drivers() {
       <div>
         <main className={'flex flex-col lg:flex-row'}>
           <Sidebar />
-          <section className={'lg:w-full bg-gray-100 h-screen'}>
+          <section className={'lg:w-full bg-gray-200 h-screen'}>
             <div
               className={
-                'w-full px-5 py-5 lg:pl-72 lg:pt-10 lg:pr-10 bg-gray-100'
+                'w-full px-5 py-5 lg:pl-72 lg:pt-10 lg:pr-10 bg-gray-200'
               }
             >
               <div
@@ -72,6 +78,7 @@ export default function Drivers() {
                         <th className={'font-semibold'}>Phone</th>
                         <th className={'font-semibold'}>Email</th>
                         <th className={'font-semibold'}>Address</th>
+                        <th className={'font-semibold'}>Taxi</th>
                         <th className={'font-semibold'}>Taxi Local</th>
                       </tr>
                       <tbody>
@@ -82,7 +89,14 @@ export default function Drivers() {
                             <td>{item.phone}</td>
                             <td>{item.email}</td>
                             <td>{item.address}</td>
-                            <td>Legon Taxi Station</td>
+                            <td>
+                              {item.taxi ? item.taxi.registrationNumber : null}
+                            </td>
+                            <td>
+                              {item.taxiLocal
+                                ? item.taxiLocal.address.name
+                                : null}
+                            </td>
                           </tr>
                         ))}
                       </tbody>
