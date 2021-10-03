@@ -3,13 +3,18 @@ import Sidebar from '../../layouts/global/Sidebar';
 import { Redirect } from 'react-router';
 import AddTaxi from '../../components/modals/AddTaxi';
 import axios from 'axios';
+import ViewTaxiDetails from '../../components/modals/ViewTaxi';
 
 export default function Taxis() {
   //   const { state } = useContext(AuthContext);
   const [taxis, setTaxis] = useState([]);
+  const [selected, setSelected] = useState(null);
   const [modalIsOpen, setIsOpen] = useState(false);
+  const [viewModalIsOpen, setViewIsOpen] = useState(false);
   const openModal = () => setIsOpen(true);
   const closeModal = () => setIsOpen(false);
+  const openViewModal = () => setViewIsOpen(true);
+  const closeViewModal = () => setViewIsOpen(false);
 
   const loadTaxis = async () => {
     const response = await axios.get(
@@ -30,6 +35,13 @@ export default function Taxis() {
     <Fragment>
       {/* {state.isAuth ? <Redirect to="/dashboard" /> : <Redirect to="/login" />} */}
       <AddTaxi modalIsOpen={modalIsOpen} closeModal={closeModal} />
+      {selected && (
+        <ViewTaxiDetails
+          modalIsOpen={viewModalIsOpen}
+          closeModal={closeViewModal}
+          taxi={selected}
+        />
+      )}
       <div>
         <main className={'flex flex-col lg:flex-row'}>
           <Sidebar />
@@ -128,6 +140,10 @@ export default function Taxis() {
                             </td>
                             <td className={'py-2'}>
                               <button
+                                onClick={() => {
+                                  setSelected(item);
+                                  openViewModal();
+                                }}
                                 className={
                                   'text-blue-800 border border-blue-800 shadow px-2 py-1 text-sm rounded'
                                 }

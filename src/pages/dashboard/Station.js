@@ -4,16 +4,21 @@ import { Redirect } from 'react-router';
 import AddStation from '../../components/modals/AddStation';
 import axios from 'axios';
 import AddPlace from '../../components/modals/AddPlace';
+import ViewStationDetails from '../../components/modals/ViewStation';
 
 export default function Stations() {
   //   const { state } = useContext(AuthContext);
   const [stationModal, setStationModal] = useState(false);
   const [placeModal, setPlaceModal] = useState(false);
   const [stations, setStations] = useState([]);
+  const [selected, setSelected] = useState(null);
   const openStationModal = () => setStationModal(true);
   const closeStationModal = () => setStationModal(false);
   const openPlaceModal = () => setPlaceModal(true);
   const closePlaceModal = () => setPlaceModal(false);
+  const [modalIsOpen, setIsOpen] = useState(false);
+  const openModal = () => setIsOpen(true);
+  const closeModal = () => setIsOpen(false);
 
   const loadStations = async () => {
     const response = await axios.get(
@@ -38,6 +43,13 @@ export default function Stations() {
         closeStationModal={closeStationModal}
       />
       <AddPlace placeModal={placeModal} closePlaceModal={closePlaceModal} />
+      {selected && (
+        <ViewStationDetails
+          modalIsOpen={modalIsOpen}
+          closeModal={closeModal}
+          station={selected}
+        />
+      )}
       <div>
         <main className={'flex flex-col lg:flex-row'}>
           <Sidebar />
@@ -107,6 +119,10 @@ export default function Stations() {
                             </td>
                             <td className={'py-2'}>
                               <button
+                                onClick={() => {
+                                  setSelected(item);
+                                  openModal();
+                                }}
                                 className={
                                   'text-blue-800 border border-blue-800 shadow px-2 py-1 text-sm rounded'
                                 }
