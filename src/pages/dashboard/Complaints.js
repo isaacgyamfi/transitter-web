@@ -1,11 +1,16 @@
 import axios from 'axios';
 import React, { Fragment, useEffect, useState } from 'react';
 import SummaryAnalyticsCard from '../../components/dashboard/SummaryAnalyticsCard';
+import ViewComplaintDetails from '../../components/modals/ViewComplainDetails';
 import Sidebar from '../../layouts/global/Sidebar';
 
 export default function Complaints() {
   const [complaints, setComplaints] = useState([]);
+  const [selected, setSelected] = useState(null);
   const [stats, setStats] = useState(null);
+  const [modalIsOpen, setIsOpen] = useState(false);
+  const openModal = () => setIsOpen(true);
+  const closeModal = () => setIsOpen(false);
 
   const loadStatistics = async () => {
     const response = await axios.get(
@@ -37,6 +42,13 @@ export default function Complaints() {
 
   return (
     <Fragment>
+      {selected && (
+        <ViewComplaintDetails
+          modalIsOpen={modalIsOpen}
+          closeModal={closeModal}
+          complaint={selected}
+        />
+      )}
       <div>
         <main className={'flex flex-col lg:flex-row'}>
           <Sidebar />
@@ -139,58 +151,63 @@ export default function Complaints() {
                             <th className={'font-semibold'}>Vehicle</th>
                           </tr>
                           <tbody>
-                            {complaints.map((item, index) => (
-                              <tr>
-                                <td className={'py-2'}>{index + 1}</td>
-                                <td className={'py-2'}>{item.user.name}</td>
-                                <td className={'py-2'}>{item.user.phone}</td>
-                                <td className={'py-2'}>
-                                  {item.status === 'NOT RESOLVED' ? (
-                                    <span
+                            {complaints &&
+                              complaints.map((item, index) => (
+                                <tr>
+                                  <td className={'py-2'}>{index + 1}</td>
+                                  <td className={'py-2'}>{item.user.name}</td>
+                                  <td className={'py-2'}>{item.user.phone}</td>
+                                  <td className={'py-2'}>
+                                    {item.status === 'NOT RESOLVED' ? (
+                                      <span
+                                        className={
+                                          'text-sm font-semibold text-red-600 bg-red-100 px-2 py-1 rounded'
+                                        }
+                                      >
+                                        NOT RESOLVED
+                                      </span>
+                                    ) : item.status === 'RESOLVED' ? (
+                                      <span
+                                        className={
+                                          'text-sm font-semibold text-green-600 bg-green-100 px-2 py-1 rounded'
+                                        }
+                                      >
+                                        RESOLVED
+                                      </span>
+                                    ) : item.status === 'PENDING' ? (
+                                      <span
+                                        className={
+                                          'text-sm font-semibold text-yellow-600 bg-yellow-100 px-2 py-1 rounded'
+                                        }
+                                      >
+                                        PENDING
+                                      </span>
+                                    ) : null}
+                                  </td>
+                                  <td className={'py-2'}>
+                                    {item.complaint.complaintType}
+                                  </td>
+                                  <td className={'py-2'}>
+                                    {item.complaint.subject}
+                                  </td>
+                                  <td className={'py-2'}>
+                                    {item.registrationNumber}
+                                  </td>
+                                  <td className={'py-2'}>
+                                    <button
+                                      onClick={() => {
+                                        setSelected(item);
+                                        openModal();
+                                      }}
                                       className={
-                                        'text-sm font-semibold text-red-600 bg-red-100 px-2 py-1 rounded'
+                                        'text-blue-800 border border-blue-800 shadow px-2 py-1 text-sm rounded'
                                       }
                                     >
-                                      NOT RESOLVED
-                                    </span>
-                                  ) : item.status === 'RESOLVED' ? (
-                                    <span
-                                      className={
-                                        'text-sm font-semibold text-green-600 bg-green-100 px-2 py-1 rounded'
-                                      }
-                                    >
-                                      RESOLVED
-                                    </span>
-                                  ) : item.status === 'PENDING' ? (
-                                    <span
-                                      className={
-                                        'text-sm font-semibold text-yellow-600 bg-yellow-100 px-2 py-1 rounded'
-                                      }
-                                    >
-                                      PENDING
-                                    </span>
-                                  ) : null}
-                                </td>
-                                <td className={'py-2'}>
-                                  {item.complaint.complaintType}
-                                </td>
-                                <td className={'py-2'}>
-                                  {item.complaint.subject}
-                                </td>
-                                <td className={'py-2'}>
-                                  {item.registrationNumber}
-                                </td>
-                                <td className={'py-2'}>
-                                  <button
-                                    className={
-                                      'text-blue-800 border border-blue-800 shadow px-2 py-1 text-sm rounded'
-                                    }
-                                  >
-                                    View
-                                  </button>
-                                </td>
-                              </tr>
-                            ))}
+                                      View
+                                    </button>
+                                  </td>
+                                </tr>
+                              ))}
                           </tbody>
                         </table>
                       ) : (

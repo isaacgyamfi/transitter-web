@@ -6,8 +6,8 @@ import axios from 'axios';
 
 export default function Taxis() {
   //   const { state } = useContext(AuthContext);
-  const [modalIsOpen, setIsOpen] = useState(false);
   const [taxis, setTaxis] = useState([]);
+  const [modalIsOpen, setIsOpen] = useState(false);
   const openModal = () => setIsOpen(true);
   const closeModal = () => setIsOpen(false);
 
