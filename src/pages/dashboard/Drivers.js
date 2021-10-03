@@ -113,7 +113,7 @@ export default function Drivers() {
                                   }
                                 >
                                   <i className={'fas fa-building mr-1'} />
-                                  Add
+                                  Link to station
                                 </button>
                               )}
                             </td>

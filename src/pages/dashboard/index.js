@@ -43,48 +43,104 @@ export default function Dashboard() {
                 </h3>
               </div>
               <div>{stats && <SummaryAnalytics stats={stats} />}</div>
-              <div className={'w-2/3 rounded-md shadow bg-white p-5 mt-2'}>
-                <div>
-                  <h3>Complaints</h3>
-                </div>
-                <Bar
-                  data={{
-                    labels: [
-                      'Jan',
-                      'Feb',
-                      'Mar',
-                      'Apr',
-                      'May',
-                      'Jun',
-                      'Jul',
-                      'Aug',
-                      'Sep',
-                      'Oct',
-                      'Nov',
-                      'Dec',
-                    ],
-                    datasets: [
-                      {
-                        label: 'Number of Complaints',
-                        data: [12, 19, 3, 5, 2, 3],
-                        backgroundColor: ['rgba(30, 64, 175, 0.10)'],
-                        borderColor: ['rgb(30, 64, 175)'],
-                        borderWidth: 1,
-                      },
-                    ],
-                  }}
-                  options={{
-                    scales: {
-                      yAxes: [
-                        {
-                          ticks: {
-                            beginAtZero: true,
+              <div className={'flex flex-row'}>
+                <div className={'w-1/2 p-2'}>
+                  <div className={'rounded-md shadow bg-white p-5 mt-2'}>
+                    <div>
+                      <h3>Complaints</h3>
+                    </div>
+                    <Bar
+                      data={{
+                        labels: [
+                          'Jan',
+                          'Feb',
+                          'Mar',
+                          'Apr',
+                          'May',
+                          'Jun',
+                          'Jul',
+                          'Aug',
+                          'Sep',
+                          'Oct',
+                          'Nov',
+                          'Dec',
+                        ],
+                        datasets: [
+                          {
+                            label: 'Number of Complaints',
+                            data: [12, 19, 3, 5, 2, 3],
+                            backgroundColor: ['rgba(30, 64, 175, 0.10)'],
+                            borderColor: ['rgb(30, 64, 175)'],
+                            borderWidth: 1,
                           },
+                        ],
+                      }}
+                      options={{
+                        scales: {
+                          yAxes: [
+                            {
+                              ticks: {
+                                beginAtZero: true,
+                              },
+                            },
+                          ],
                         },
-                      ],
-                    },
-                  }}
-                />
+                      }}
+                    />
+                  </div>
+                </div>
+                <div className={'w-1/2 p-2'}>
+                  <div className={'rounded-md shadow bg-white p-5 mt-2'}>
+                    <div>
+                      <h3>Taxis and Drivers</h3>
+                    </div>
+                    <Bar
+                      data={{
+                        labels: [
+                          'Jan',
+                          'Feb',
+                          'Mar',
+                          'Apr',
+                          'May',
+                          'Jun',
+                          'Jul',
+                          'Aug',
+                          'Sep',
+                          'Oct',
+                          'Nov',
+                          'Dec',
+                        ],
+                        datasets: [
+                          {
+                            label: 'Number of Taxis',
+                            data: [12, 19, 3, 5, 2, 3],
+                            // backgroundColor: ['#FEF3C7'],
+                            backgroundColor: ['#D97706'],
+                            borderWidth: 1,
+                          },
+                          {
+                            label: 'Number of Drivers',
+                            data: [12, 19, 3, 5, 2, 3],
+                            // backgroundColor: ['rgba(30, 64, 175, 0.10)'],
+                            backgroundColor: ['rgb(30, 64, 175)'],
+                            borderWidth: 1,
+                          },
+                        ],
+                      }}
+                      options={{
+                        scales: {
+                          yAxes: [
+                            {
+                              ticks: {
+                                beginAtZero: true,
+                              },
+                            },
+                          ],
+                        },
+                      }}
+                    />
+                  </div>
+                </div>
               </div>
             </div>
           </section>
