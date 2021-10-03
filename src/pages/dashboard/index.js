@@ -1,12 +1,29 @@
-import React, { Fragment, useContext } from 'react';
+import React, { Fragment, useContext, useEffect, useState } from 'react';
 import { Bar } from 'react-chartjs-2';
 import Sidebar from '../../layouts/global/Sidebar';
 // import { AuthContext } from '../../../contexts/AuthContext';
 import { Redirect } from 'react-router';
 import SummaryAnalytics from '../../components/dashboard/SummaryAnalytics';
+import axios from 'axios';
 
 export default function Dashboard() {
   //   const { state } = useContext(AuthContext);
+  const [stats, setStats] = useState(null);
+
+  const loadStatistics = async () => {
+    const response = await axios.get(
+      `${
+        process.env.NODE_ENV === 'development'
+          ? process.env.REACT_APP_DEV_API_BASE_URL
+          : null
+      }/stats`,
+    );
+    return setStats(response.data.data);
+  };
+
+  useEffect(() => {
+    loadStatistics();
+  }, []);
 
   return (
     <Fragment>
@@ -25,9 +42,7 @@ export default function Dashboard() {
                   Dashboard
                 </h3>
               </div>
-              <div>
-                <SummaryAnalytics />
-              </div>
+              <div>{stats && <SummaryAnalytics stats={stats} />}</div>
               <div className={'w-2/3 rounded-md shadow bg-white p-5 mt-2'}>
                 <div>
                   <h3>Complaints</h3>

@@ -84,18 +84,47 @@ export default function Drivers() {
                       <tbody>
                         {drivers.map((item, index) => (
                           <tr key={index} className={'text-left'}>
-                            <td>1</td>
-                            <td>{item.name}</td>
-                            <td>{item.phone}</td>
-                            <td>{item.email}</td>
-                            <td>{item.address}</td>
-                            <td>
-                              {item.taxi ? item.taxi.registrationNumber : null}
+                            <td className={'py-2'}>{index + 1}</td>
+                            <td className={'py-2'}>{item.name}</td>
+                            <td className={'py-2'}>{item.phone}</td>
+                            <td className={'py-2'}>{item.email}</td>
+                            <td className={'py-2'}>{item.address}</td>
+                            <td className={'py-2'}>
+                              {item.taxi ? (
+                                item.taxi.registrationNumber
+                              ) : (
+                                <button
+                                  className={
+                                    'text-yellow-600 border border-yellow-600 bg-yellow-100 shadow px-2 py-1 text-sm rounded'
+                                  }
+                                >
+                                  <i className={'fas fa-taxi mr-1'} />
+                                  Assign taxi
+                                </button>
+                              )}
                             </td>
-                            <td>
-                              {item.taxiLocal
-                                ? item.taxiLocal.address.name
-                                : null}
+                            <td className={'py-2'}>
+                              {item.taxiLocal ? (
+                                item.taxiLocal.address.name
+                              ) : (
+                                <button
+                                  className={
+                                    'text-red-600 border border-red-600 bg-red-100 shadow px-2 py-1 text-sm rounded'
+                                  }
+                                >
+                                  <i className={'fas fa-building mr-1'} />
+                                  Add
+                                </button>
+                              )}
+                            </td>
+                            <td className={'py-2'}>
+                              <button
+                                className={
+                                  'text-blue-800 border border-blue-800 shadow px-2 py-1 text-sm rounded'
+                                }
+                              >
+                                View
+                              </button>
                             </td>
                           </tr>
                         ))}

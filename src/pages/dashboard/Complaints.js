@@ -3,39 +3,20 @@ import React, { Fragment, useEffect, useState } from 'react';
 import SummaryAnalyticsCard from '../../components/dashboard/SummaryAnalyticsCard';
 import Sidebar from '../../layouts/global/Sidebar';
 
-const caseTypes = [
-  {
-    key: 1,
-    type: 'Fare',
-    count: 21,
-    color: 'bg-green-50',
-    icon: 'fas fa-wallet text-4xl text-green-600',
-  },
-  {
-    key: 2,
-    type: 'Theft',
-    count: 19,
-    color: 'bg-red-50',
-    icon: 'fas fa-theater-masks text-4xl text-red-600',
-  },
-  {
-    key: 3,
-    type: 'Abuse',
-    count: 19,
-    color: 'bg-blue-50',
-    icon: 'fas fa-hand-point-right text-4xl text-blue-600',
-  },
-  {
-    key: 4,
-    type: 'Forgotten Item',
-    count: 28,
-    color: 'bg-yellow-50',
-    icon: 'fas fa-box-open text-4xl text-yellow-600',
-  },
-];
-
 export default function Complaints() {
   const [complaints, setComplaints] = useState([]);
+  const [stats, setStats] = useState(null);
+
+  const loadStatistics = async () => {
+    const response = await axios.get(
+      `${
+        process.env.NODE_ENV === 'development'
+          ? process.env.REACT_APP_DEV_API_BASE_URL
+          : null
+      }/stats/complaints`,
+    );
+    return setStats(response.data.data);
+  };
 
   const loadComplaints = async () => {
     const response = await axios.get(
@@ -50,6 +31,7 @@ export default function Complaints() {
   };
 
   useEffect(() => {
+    loadStatistics();
     loadComplaints();
   }, []);
 
@@ -74,16 +56,36 @@ export default function Complaints() {
 
               <div className={'flex flex-row justify-between items-center'}>
                 <div className={'w-full'}>
-                  <div className={'flex flex-row justify-between items-center'}>
-                    {caseTypes.map((item, index) => (
+                  {stats && (
+                    <div
+                      className={'flex flex-row justify-between items-center'}
+                    >
                       <SummaryAnalyticsCard
-                        title={item.type}
-                        count={item.count}
-                        color={item.color}
-                        icon={item.icon}
+                        title={'Fare'}
+                        count={stats.fares}
+                        color={'bg-green-100'}
+                        icon={'fas fa-wallet text-4xl text-green-600'}
                       />
-                    ))}
-                  </div>
+                      <SummaryAnalyticsCard
+                        title={'Theft'}
+                        count={stats.thefts}
+                        color={'bg-red-100'}
+                        icon={'fas fa-theater-masks text-4xl text-red-600'}
+                      />
+                      <SummaryAnalyticsCard
+                        title={'Abuse'}
+                        count={stats.abuse}
+                        color={'bg-blue-100'}
+                        icon={'fas fa-hand-point-right text-4xl text-blue-600'}
+                      />
+                      <SummaryAnalyticsCard
+                        title={'Forgotten Item'}
+                        count={stats.forgottenItems}
+                        color={'bg-yellow-100'}
+                        icon={'fas fa-box-open text-4xl text-yellow-600'}
+                      />
+                    </div>
+                  )}
                 </div>
               </div>
               <div>
@@ -144,21 +146,37 @@ export default function Complaints() {
                                 <td className={'py-2'}>{item.user.phone}</td>
                                 <td className={'py-2'}>
                                   {item.status === 'NOT RESOLVED' ? (
-                                    <i
+                                    <span
                                       className={
-                                        'text-yellow-500 text-lg fas fa-exclamation-circle'
+                                        'text-sm font-semibold text-red-600 bg-red-100 px-2 py-1 rounded'
                                       }
-                                    />
+                                    >
+                                      NOT RESOLVED
+                                    </span>
                                   ) : item.status === 'RESOLVED' ? (
-                                    <i
+                                    <span
                                       className={
-                                        'text-green-600 text-lg fas fa-check-circle'
+                                        'text-sm font-semibold text-green-600 bg-green-100 px-2 py-1 rounded'
                                       }
-                                    />
+                                    >
+                                      RESOLVED
+                                    </span>
+                                  ) : item.status === 'PENDING' ? (
+                                    <span
+                                      className={
+                                        'text-sm font-semibold text-yellow-600 bg-yellow-100 px-2 py-1 rounded'
+                                      }
+                                    >
+                                      PENDING
+                                    </span>
                                   ) : null}
                                 </td>
-                                <td className={'py-2'}>{item.type}</td>
-                                <td className={'py-2'}>{item.subject}</td>
+                                <td className={'py-2'}>
+                                  {item.complaint.complaintType}
+                                </td>
+                                <td className={'py-2'}>
+                                  {item.complaint.subject}
+                                </td>
                                 <td className={'py-2'}>
                                   {item.registrationNumber}
                                 </td>

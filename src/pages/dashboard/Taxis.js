@@ -85,7 +85,7 @@ export default function Taxis() {
                           <tr key={index} className={'text-left'}>
                             <td>1</td>
                             <td>{item.registrationNumber}</td>
-                            <td className={'flex flex-row items-center'}>
+                            <td className={'py-2 flex flex-row items-center'}>
                               <div
                                 className={'w-5 h-5 border border-black'}
                                 style={{
@@ -105,12 +105,36 @@ export default function Taxis() {
                                 }}
                               />
                             </td>
-                            <td>
+                            <td className={'py-2'}>
                               {item.brand} {item.model}
                             </td>
-                            <td>{item.vin}</td>
-                            <td>{item.driver}</td>
-                            <td>{item.station.address.name}</td>
+                            <td className={'py-2'}>{item.vin}</td>
+                            <td className={'py-2'}>
+                              {item.driver ? (
+                                item.driver
+                              ) : (
+                                <button
+                                  className={
+                                    'text-blue-600 border border-blue-600 bg-blue-100 shadow px-2 py-1 text-sm rounded'
+                                  }
+                                >
+                                  <i className={'fas fa-building mr-1'} />
+                                  Assign driver
+                                </button>
+                              )}
+                            </td>
+                            <td className={'py-2'}>
+                              {item.station.address.name}
+                            </td>
+                            <td className={'py-2'}>
+                              <button
+                                className={
+                                  'text-blue-800 border border-blue-800 shadow px-2 py-1 text-sm rounded'
+                                }
+                              >
+                                View
+                              </button>
+                            </td>
                           </tr>
                         ))}
                       </tbody>

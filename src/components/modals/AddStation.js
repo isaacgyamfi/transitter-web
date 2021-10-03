@@ -3,6 +3,7 @@ import Modal from 'react-modal';
 import { Formik } from 'formik';
 
 import towns from '../../assets/towns.json';
+import Autocomplete from 'react-autocomplete';
 
 Modal.setAppElement('#root');
 
@@ -22,9 +23,10 @@ export default function AddStation({ stationModal, closeStationModal }) {
           name: '',
           vicinity: '',
           region: '',
-          gps: '',
-          longitude: '',
-          latitude: '',
+          adminName: '',
+          phone: '',
+          email: '',
+          fare: '',
         }}
         onSubmit={(values, actions) => createStation(values, actions)}
       >
@@ -41,7 +43,7 @@ export default function AddStation({ stationModal, closeStationModal }) {
                 <h3 className={'text-sm'}>Place details</h3>
               </div>
               <div className={'p-2 w-full'}>
-                <label className={'w-full'}>Name</label>
+                <label className={'w-full'}>Place Name</label>
                 <input
                   name={'name'}
                   type={'text'}
@@ -49,77 +51,77 @@ export default function AddStation({ stationModal, closeStationModal }) {
                   value={props.values.name}
                   onChange={props.handleChange('name')}
                 />
+                {/* <Autocomplete
+                  className={'w-full mt-1 bg-gray-200 p-3'}
+                  getItemValue={(item) => item.label}
+                  items={[
+                    { label: 'apple' },
+                    { label: 'banana' },
+                    { label: 'pear' },
+                  ]}
+                  renderItem={(item, isHighlighted) => (
+                    <div
+                      style={{
+                        background: isHighlighted ? 'lightgray' : 'white',
+                      }}
+                    >
+                      {item.label}
+                    </div>
+                  )}
+                  value={props.values.name}
+                  onChange={props.handleChange('name')}
+                  onSelect={(val) => (value = val)}
+                /> */}
               </div>
               <div className={'flex flex-row'}>
                 <div className={'p-2 w-1/2'}>
-                  <label className={'w-full'}>Vicinity</label>
-                  <select
-                    name={'vicinity'}
-                    className={'w-full mt-1 bg-gray-200 p-3'}
-                    value={props.values.vicinity}
-                    onChange={props.handleChange('vicinity')}
-                  >
-                    {Object.values(towns)
-                      .flat(1)
-                      .sort()
-                      .map((item, index) => (
-                        <option key={index} value={item}>
-                          {item}
-                        </option>
-                      ))}
-                  </select>
-                </div>
-                <div className={'p-2 w-1/2'}>
-                  <label className={'w-full'}>Region</label>
-                  <select
-                    name={'region'}
-                    className={'w-full mt-1 bg-gray-200 p-3'}
-                    value={props.values.region}
-                    onChange={props.handleChange('region')}
-                  >
-                    <option>Select one</option>
-                    {Object.keys(towns).map((item, index) => (
-                      <option key={index} value={item}>
-                        {item}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-              </div>
-              <div className={'flex flex-row'}>
-                <div className={'p-2 w-1/3'}>
-                  <label className={'w-full'}>GPS Address</label>
+                  <label className={'w-full'}>Primary Contact</label>
                   <input
-                    name={'gps'}
-                    type={'text'}
-                    className={'w-full mt-1 bg-gray-200 p-3'}
-                    value={props.values.gps}
-                    onChange={props.handleChange('gps')}
-                  />
-                </div>
-                <div className={'p-2 w-1/3'}>
-                  <label className={'w-full'}>longitude</label>
-                  <input
-                    name={'longitude'}
+                    name={'phone'}
                     type={'number'}
                     className={'w-full mt-1 bg-gray-200 p-3'}
-                    value={props.values.longitude}
-                    onChange={props.handleChange('longitude')}
-                  />
-                </div>
-                <div className={'p-2 w-1/3'}>
-                  <label className={'w-full'}>latitude</label>
-                  <input
-                    name={'latitude'}
-                    type={'number'}
-                    className={'w-full mt-1 bg-gray-200 p-3'}
-                    value={props.values.latitude}
-                    onChange={props.handleChange('latitude')}
+                    value={props.values.phone}
+                    onChange={props.handleChange('phone')}
                   />
                 </div>
               </div>
               <div>
-                <h3 className={'text-sm'}>Station details</h3>
+                <h3 className={'text-sm'}>Administration details</h3>
+              </div>
+              <div className={'flex flex-row'}>
+                <div className={'p-2 w-1/3'}>
+                  <label className={'w-full'}>Name</label>
+                  <input
+                    name={'adminName'}
+                    type={'text'}
+                    className={'w-full mt-1 bg-gray-200 p-3'}
+                    value={props.values.adminName}
+                    onChange={props.handleChange('adminName')}
+                  />
+                </div>
+                <div className={'p-2 w-1/3'}>
+                  <label className={'w-full'}>Phone</label>
+                  <input
+                    name={'adminPhone'}
+                    type={'number'}
+                    className={'w-full mt-1 bg-gray-200 p-3'}
+                    value={props.values.adminPhone}
+                    onChange={props.handleChange('adminPhone')}
+                  />
+                </div>
+                <div className={'p-2 w-1/3'}>
+                  <label className={'w-full'}>Email</label>
+                  <input
+                    name={'email'}
+                    type={'adminEmail'}
+                    className={'w-full mt-1 bg-gray-200 p-3'}
+                    value={props.values.email}
+                    onChange={props.handleChange('email')}
+                  />
+                </div>
+              </div>
+              <div>
+                <h3 className={'text-sm'}>Add Destinations</h3>
               </div>
               <div className={'flex flex-row items-end'}>
                 <div className={'p-2 w-1/2'}>
@@ -133,7 +135,7 @@ export default function AddStation({ stationModal, closeStationModal }) {
                 <div className={'p-2 w-1/2'}>
                   <label className={'w-full'}>Fare</label>
                   <input
-                    name={'amount'}
+                    name={'fare'}
                     type={'number'}
                     className={'w-full mt-1 bg-gray-200 p-3'}
                   />

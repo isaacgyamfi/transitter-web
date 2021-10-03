@@ -94,13 +94,26 @@ export default function Stations() {
                       <tbody>
                         {stations.map((item, index) => (
                           <tr key={index} className={'text-left'}>
-                            <td>{index + 1}</td>
-                            <td>{item.address.name}</td>
-                            <td>{item.address.vicinity}</td>
-                            <td>{item.destinations.length}</td>
-                            <td>{item.taxis.length}</td>
-                            <td>{item.stationAdmin.name}</td>
-                            <td>{item.stationAdmin.phone}</td>
+                            <td className={'py-2'}>{index + 1}</td>
+                            <td className={'py-2'}>{item.address.name}</td>
+                            <td className={'py-2'}>{item.address.vicinity}</td>
+                            <td className={'py-2'}>
+                              {item.destinations.length}
+                            </td>
+                            <td className={'py-2'}>{item.taxis.length}</td>
+                            <td className={'py-2'}>{item.stationAdmin.name}</td>
+                            <td className={'py-2'}>
+                              {item.stationAdmin.phone}
+                            </td>
+                            <td className={'py-2'}>
+                              <button
+                                className={
+                                  'text-blue-800 border border-blue-800 shadow px-2 py-1 text-sm rounded'
+                                }
+                              >
+                                View
+                              </button>
+                            </td>
                           </tr>
                         ))}
                       </tbody>
