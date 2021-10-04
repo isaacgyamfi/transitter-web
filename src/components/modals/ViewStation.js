@@ -40,7 +40,7 @@ export default function ViewStationDetails({
       style={customStyles}
       contentLabel="Example Modal"
     >
-      <div style={{ width: 500 }}>
+      <div style={{ width: 600 }}>
         <div className={'flex flex-row justify-between items-center'}>
           <h3 className={'text-xl font-semibold'}>Taxi Station Details</h3>
           <button></button>
@@ -79,7 +79,9 @@ export default function ViewStationDetails({
               </p>
             </div>
             <div className={'mb-2'}>
-              <h3 className={'text-blue-800'}>Geolocation</h3>
+              <h3 className={'text-blue-800'}>
+                Geolocation (longitude, latitude)
+              </h3>
               <p className={'text-lg px-3 py-2 rounded bg-gray-100'}>
                 {station.address.geometry.location.lng},
                 {station.address.geometry.location.lat}

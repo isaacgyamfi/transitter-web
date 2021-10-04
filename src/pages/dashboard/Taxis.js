@@ -4,6 +4,7 @@ import { Redirect } from 'react-router';
 import AddTaxi from '../../components/modals/AddTaxi';
 import axios from 'axios';
 import ViewTaxiDetails from '../../components/modals/ViewTaxi';
+import AssignDriver from '../../components/modals/AssignDriver';
 
 export default function Taxis() {
   //   const { state } = useContext(AuthContext);
@@ -11,10 +12,13 @@ export default function Taxis() {
   const [selected, setSelected] = useState(null);
   const [modalIsOpen, setIsOpen] = useState(false);
   const [viewModalIsOpen, setViewIsOpen] = useState(false);
+  const [assignDriverIsOpen, setAssignDriverIsOpen] = useState(false);
   const openModal = () => setIsOpen(true);
   const closeModal = () => setIsOpen(false);
   const openViewModal = () => setViewIsOpen(true);
   const closeViewModal = () => setViewIsOpen(false);
+  const openAssignDriverModal = () => setAssignDriverIsOpen(true);
+  const closeAssignDriverModal = () => setAssignDriverIsOpen(false);
 
   const loadTaxis = async () => {
     const response = await axios.get(
@@ -24,6 +28,7 @@ export default function Taxis() {
           : null
       }/taxis`,
     );
+    console.log(response.data.data);
     return setTaxis(response.data.data);
   };
 
@@ -35,6 +40,11 @@ export default function Taxis() {
     <Fragment>
       {/* {state.isAuth ? <Redirect to="/dashboard" /> : <Redirect to="/login" />} */}
       <AddTaxi modalIsOpen={modalIsOpen} closeModal={closeModal} />
+      <AssignDriver
+        modalIsOpen={assignDriverIsOpen}
+        closeModal={closeAssignDriverModal}
+        taxi={selected}
+      />
       {selected && (
         <ViewTaxiDetails
           modalIsOpen={viewModalIsOpen}
@@ -59,17 +69,10 @@ export default function Taxis() {
                   <button
                     onClick={() => openModal()}
                     className={
-                      'mr-2 text-white bg-blue-800 shadow px-3 py-2 rounded'
+                      'text-white bg-blue-800 shadow px-3 py-2 rounded'
                     }
                   >
                     Register a taxi
-                  </button>
-                  <button
-                    className={
-                      'text-blue-800 border border-blue-800 shadow px-3 py-2 rounded'
-                    }
-                  >
-                    Assign a driver
                   </button>
                 </div>
               </div>
@@ -123,9 +126,13 @@ export default function Taxis() {
                             <td className={'py-2'}>{item.vin}</td>
                             <td className={'py-2'}>
                               {item.driver ? (
-                                item.driver
+                                item.driver.name
                               ) : (
                                 <button
+                                  onClick={() => {
+                                    setSelected(item);
+                                    openAssignDriverModal();
+                                  }}
                                   className={
                                     'text-blue-600 border border-blue-600 bg-blue-100 shadow px-2 py-1 text-sm rounded'
                                   }

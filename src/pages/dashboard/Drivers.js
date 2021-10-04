@@ -48,17 +48,10 @@ export default function Drivers() {
                   <button
                     onClick={() => openModal()}
                     className={
-                      'mr-2 text-white bg-blue-800 shadow px-3 py-2 rounded'
+                      'text-white bg-blue-800 shadow px-3 py-2 rounded'
                     }
                   >
                     Register a driver
-                  </button>
-                  <button
-                    className={
-                      'text-blue-800 border border-blue-800 shadow px-3 py-2 rounded'
-                    }
-                  >
-                    Assign a taxi
                   </button>
                 </div>
               </div>

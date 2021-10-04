@@ -3,6 +3,7 @@ import Modal from 'react-modal';
 import { regionCode, year } from '../../assets/numberPlates';
 
 import towns from '../../assets/towns.json';
+import colors from '../../assets/colors.json';
 import cars from '../../assets/car-brands.json';
 import { Formik } from 'formik';
 import axios from 'axios';
@@ -91,36 +92,42 @@ export default function AddTaxi({ modalIsOpen, closeModal }) {
                 <div className={'p-2 w-full lg:w-1/2'}>
                   <label className={'w-full'}>Registration Number</label>
                   <div className={'flex flex-row'}>
-                    <select
-                      className={'bg-gray-200'}
-                      name={'region'}
-                      value={props.values.region}
-                      onChange={props.handleChange('region')}
-                    >
-                      <option>Select</option>
-                      {regionCode.map((item, index) => (
-                        <option key={index}>{item}</option>
-                      ))}
-                    </select>
-                    <input
-                      name={'carNumber'}
-                      type={'number'}
-                      min="1"
-                      className={'w-full mt-1 bg-gray-200 p-3'}
-                      onChange={props.handleChange('carNumber')}
-                      value={props.values.carNumber}
-                    />
-                    <select
-                      className={'bg-gray-200'}
-                      name={'year'}
-                      value={props.values.year}
-                      onChange={props.handleChange('year')}
-                    >
-                      <option>Select</option>
-                      {year.map((item, index) => (
-                        <option key={index}>{item}</option>
-                      ))}
-                    </select>
+                    <div className={'p-1 w-1/3'}>
+                      <select
+                        className={'w-full bg-gray-200 p-3'}
+                        name={'region'}
+                        value={props.values.region}
+                        onChange={props.handleChange('region')}
+                      >
+                        <option>Select</option>
+                        {regionCode.map((item, index) => (
+                          <option key={index}>{item}</option>
+                        ))}
+                      </select>
+                    </div>
+                    <div className={'p-1 w-1/3'}>
+                      <input
+                        name={'carNumber'}
+                        type={'number'}
+                        min="1"
+                        className={'w-full bg-gray-200 p-3'}
+                        onChange={props.handleChange('carNumber')}
+                        value={props.values.carNumber}
+                      />
+                    </div>
+                    <div className={'p-1 w-1/3'}>
+                      <select
+                        className={'w-full bg-gray-200 p-3'}
+                        name={'year'}
+                        value={props.values.year}
+                        onChange={props.handleChange('year')}
+                      >
+                        <option>Select</option>
+                        {year.map((item, index) => (
+                          <option key={index}>{item}</option>
+                        ))}
+                      </select>
+                    </div>
                   </div>
                 </div>
                 <div className={'p-2 w-full lg:w-1/2'}>
@@ -135,7 +142,7 @@ export default function AddTaxi({ modalIsOpen, closeModal }) {
                 </div>
               </div>
               <div className={'flex flex-row'}>
-                <div className={'p-2 w-1/2'}>
+                <div className={'p-2 w-1/4'}>
                   <label className={'w-full'}>Brand</label>
                   <select
                     name={'brand'}
@@ -150,7 +157,7 @@ export default function AddTaxi({ modalIsOpen, closeModal }) {
                     ))}
                   </select>
                 </div>
-                <div className={'p-2 w-1/2'}>
+                <div className={'p-2 w-1/4'}>
                   <label className={'w-full'}>Model</label>
                   <select
                     name={'model'}
@@ -165,6 +172,37 @@ export default function AddTaxi({ modalIsOpen, closeModal }) {
                       </option>
                     ))}
                   </select>
+                </div>
+                <div className={'p-2 w-2/4'}>
+                  <label className={'w-full'}>Colors</label>
+                  <div className={'flex flex-row'}>
+                    <div className={'p-1 w-1/2'}>
+                      <select
+                        className={'bg-gray-200 p-3'}
+                        name={'fender'}
+                        value={props.values.fender}
+                        onChange={props.handleChange('fender')}
+                      >
+                        <option>Select fender color</option>
+                        {Object.keys(colors).map((item, index) => (
+                          <option key={index}>{item}</option>
+                        ))}
+                      </select>
+                    </div>
+                    <div className={'p-1 w-1/2'}>
+                      <select
+                        className={'bg-gray-200 p-3'}
+                        name={'doors'}
+                        value={props.values.doors}
+                        onChange={props.handleChange('doors')}
+                      >
+                        <option>Select door color</option>
+                        {Object.keys(colors).map((item, index) => (
+                          <option key={index}>{item}</option>
+                        ))}
+                      </select>
+                    </div>
+                  </div>
                 </div>
               </div>
               <div className={'flex flex-row'}>
@@ -182,7 +220,7 @@ export default function AddTaxi({ modalIsOpen, closeModal }) {
                   <label className={'w-full'}>Owner contact</label>
                   <input
                     name={'ownerContact'}
-                    type={'number'}
+                    type={'tel'}
                     className={'w-full mt-1 bg-gray-200 p-3'}
                     onChange={props.handleChange('ownerContact')}
                     value={props.values.ownerContact}
@@ -206,12 +244,12 @@ export default function AddTaxi({ modalIsOpen, closeModal }) {
                 <div className={'p-2 w-full'}>
                   <label className={'w-full'}>Assign station</label>
                   <select
-                    name={'type'}
+                    name={'station'}
                     className={'w-full mt-1 bg-gray-200 p-3'}
                     value={props.values.station}
                     onChange={props.handleChange('station')}
                   >
-                    <option>Select one</option>
+                    <option disabled>Select one</option>
                     {stations
                       ? stations.map((item, index) => (
                           <option key={index} value={item.address.name}>

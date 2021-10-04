@@ -1,16 +1,51 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Modal from 'react-modal';
 import { Formik } from 'formik';
 
 import towns from '../../assets/towns.json';
 import Autocomplete from 'react-autocomplete';
+import axios from 'axios';
 
 Modal.setAppElement('#root');
 
 export default function AddStation({ stationModal, closeStationModal }) {
-  const createStation = (values, actions) => {
-    console.log(values);
+  const [places, setPlaces] = useState([]);
+
+  const loadRegisteredPlaces = async () => {
+    const response = await axios.get(
+      `${
+        process.env.NODE_ENV === 'development'
+          ? process.env.REACT_APP_DEV_API_BASE_URL
+          : null
+      }/places`,
+    );
+    console.log(response.data.data);
+    return setPlaces(response.data.data);
   };
+  const createStation = async (values, actions) => {
+    console.log(values);
+    const response = await axios.post(
+      `${
+        process.env.NODE_ENV === 'development'
+          ? process.env.REACT_APP_DEV_API_BASE_URL
+          : null
+      }/stations/add`,
+      {
+        stationAdmin: {
+          name: values.adminName,
+          phone: values.adminPhone,
+          email: values.adminEmail,
+        },
+        contact: values.phone,
+        address: values.name,
+      },
+    );
+    // closeModal();
+    console.log(response);
+  };
+  useEffect(() => {
+    loadRegisteredPlaces();
+  }, []);
   return (
     <Modal
       isOpen={stationModal}
@@ -21,12 +56,11 @@ export default function AddStation({ stationModal, closeStationModal }) {
       <Formik
         initialValues={{
           name: '',
-          vicinity: '',
-          region: '',
           adminName: '',
+          adminPhone: '',
+          adminEmail: '',
           phone: '',
           email: '',
-          fare: '',
         }}
         onSubmit={(values, actions) => createStation(values, actions)}
       >
@@ -44,13 +78,23 @@ export default function AddStation({ stationModal, closeStationModal }) {
               </div>
               <div className={'p-2 w-full'}>
                 <label className={'w-full'}>Place Name</label>
-                <input
+                <select
                   name={'name'}
-                  type={'text'}
                   className={'w-full mt-1 bg-gray-200 p-3'}
                   value={props.values.name}
                   onChange={props.handleChange('name')}
-                />
+                >
+                  <option disabled>Select one</option>
+                  {places
+                    ? places.map((item, index) => (
+                        <option key={index} value={item.name}>
+                          {item.name}
+                          {', '}
+                          {item.vicinity}
+                        </option>
+                      ))
+                    : null}
+                </select>
                 {/* <Autocomplete
                   className={'w-full mt-1 bg-gray-200 p-3'}
                   getItemValue={(item) => item.label}
@@ -78,7 +122,7 @@ export default function AddStation({ stationModal, closeStationModal }) {
                   <label className={'w-full'}>Primary Contact</label>
                   <input
                     name={'phone'}
-                    type={'number'}
+                    type={'tel'}
                     className={'w-full mt-1 bg-gray-200 p-3'}
                     value={props.values.phone}
                     onChange={props.handleChange('phone')}
@@ -103,7 +147,7 @@ export default function AddStation({ stationModal, closeStationModal }) {
                   <label className={'w-full'}>Phone</label>
                   <input
                     name={'adminPhone'}
-                    type={'number'}
+                    type={'tel'}
                     className={'w-full mt-1 bg-gray-200 p-3'}
                     value={props.values.adminPhone}
                     onChange={props.handleChange('adminPhone')}
@@ -115,8 +159,8 @@ export default function AddStation({ stationModal, closeStationModal }) {
                     name={'email'}
                     type={'adminEmail'}
                     className={'w-full mt-1 bg-gray-200 p-3'}
-                    value={props.values.email}
-                    onChange={props.handleChange('email')}
+                    value={props.values.adminEmail}
+                    onChange={props.handleChange('adminEmail')}
                   />
                 </div>
               </div>
