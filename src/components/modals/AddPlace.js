@@ -1,18 +1,18 @@
-import { useState } from 'react';
-import Modal from 'react-modal';
-import { Formik } from 'formik';
+import React from "react";
+import Modal from "react-modal";
+import { Formik } from "formik";
+import towns from "../../assets/towns.json";
+import axios from "axios";
+import { customStyles } from "../../assets/styles/globalStyles";
 
-import towns from '../../assets/towns.json';
-import axios from 'axios';
-
-Modal.setAppElement('#root');
+Modal.setAppElement("#root");
 
 export default function AddPlace({ placeModal, closePlaceModal }) {
   const createPlace = async (values, actions) => {
     console.log(values);
     const response = await axios.post(
       `${
-        process.env.NODE_ENV === 'development'
+        process.env.NODE_ENV === "development"
           ? process.env.REACT_APP_DEV_API_BASE_URL
           : null
       }/places/add`,
@@ -27,7 +27,7 @@ export default function AddPlace({ placeModal, closePlaceModal }) {
             lat: values.latitude,
           },
         },
-      },
+      }
     );
     closePlaceModal();
     console.log(response);
@@ -41,12 +41,12 @@ export default function AddPlace({ placeModal, closePlaceModal }) {
     >
       <Formik
         initialValues={{
-          name: '',
-          type: '',
-          vicinity: '',
-          region: '',
-          longitude: '',
-          latitude: '',
+          name: "",
+          type: "",
+          vicinity: "",
+          region: "",
+          longitude: "",
+          latitude: "",
         }}
         onSubmit={(values, actions) => createPlace(values, actions)}
       >
@@ -54,37 +54,37 @@ export default function AddPlace({ placeModal, closePlaceModal }) {
           return (
             <div>
               <div>
-                <h3 className={'text-xl font-semibold'}>Save a new place</h3>
+                <h3 className={"text-xl font-semibold"}>Save a new place</h3>
               </div>
-              <hr className={'my-2'} />
+              <hr className={"my-2"} />
               <div>
-                <h3 className={'text-sm'}>Place details</h3>
+                <h3 className={"text-sm"}>Place details</h3>
               </div>
-              <div className={'flex flex-row'}>
-                <div className={'p-2 w-full'}>
-                  <label className={'w-full'}>Name</label>
+              <div className={"flex flex-row"}>
+                <div className={"p-2 w-full"}>
+                  <label className={"w-full"}>Name</label>
                   <input
-                    name={'name'}
-                    type={'text'}
-                    className={'w-full mt-1 bg-gray-200 p-3'}
+                    name={"name"}
+                    type={"text"}
+                    className={"w-full mt-1 bg-gray-200 p-3"}
                     value={props.values.name}
-                    onChange={props.handleChange('name')}
+                    onChange={props.handleChange("name")}
                   />
                 </div>
-                <div className={'p-2 w-1/2'}>
-                  <label className={'w-full'}>Place type</label>
+                <div className={"p-2 w-1/2"}>
+                  <label className={"w-full"}>Place type</label>
                   <select
-                    name={'type'}
-                    className={'w-full mt-1 bg-gray-200 p-3'}
+                    name={"type"}
+                    className={"w-full mt-1 bg-gray-200 p-3"}
                     value={props.values.type}
-                    onChange={props.handleChange('type')}
+                    onChange={props.handleChange("type")}
                   >
                     <option>Select one</option>
                     {[
-                      'taxi station',
-                      'bus stop',
-                      'establishment',
-                      'bus station',
+                      "taxi station",
+                      "bus stop",
+                      "establishment",
+                      "bus station",
                     ].map((item, index) => (
                       <option key={index} value={item}>
                         {item}
@@ -93,14 +93,14 @@ export default function AddPlace({ placeModal, closePlaceModal }) {
                   </select>
                 </div>
               </div>
-              <div className={'flex flex-row'}>
-                <div className={'p-2 w-1/2'}>
-                  <label className={'w-full'}>Vicinity</label>
+              <div className={"flex flex-row"}>
+                <div className={"p-2 w-1/2"}>
+                  <label className={"w-full"}>Vicinity</label>
                   <select
-                    name={'vicinity'}
-                    className={'w-full mt-1 bg-gray-200 p-3'}
+                    name={"vicinity"}
+                    className={"w-full mt-1 bg-gray-200 p-3"}
                     value={props.values.vicinity}
-                    onChange={props.handleChange('vicinity')}
+                    onChange={props.handleChange("vicinity")}
                   >
                     {Object.values(towns)
                       .flat(1)
@@ -112,13 +112,13 @@ export default function AddPlace({ placeModal, closePlaceModal }) {
                       ))}
                   </select>
                 </div>
-                <div className={'p-2 w-1/2'}>
-                  <label className={'w-full'}>Region</label>
+                <div className={"p-2 w-1/2"}>
+                  <label className={"w-full"}>Region</label>
                   <select
-                    name={'region'}
-                    className={'w-full mt-1 bg-gray-200 p-3'}
+                    name={"region"}
+                    className={"w-full mt-1 bg-gray-200 p-3"}
                     value={props.values.region}
-                    onChange={props.handleChange('region')}
+                    onChange={props.handleChange("region")}
                   >
                     <option>Select one</option>
                     {Object.keys(towns).map((item, index) => (
@@ -129,34 +129,34 @@ export default function AddPlace({ placeModal, closePlaceModal }) {
                   </select>
                 </div>
               </div>
-              <div className={'flex flex-row'}>
-                <div className={'p-2 w-1/2'}>
-                  <label className={'w-full'}>longitude</label>
+              <div className={"flex flex-row"}>
+                <div className={"p-2 w-1/2"}>
+                  <label className={"w-full"}>longitude</label>
                   <input
-                    name={'longitude'}
-                    type={'number'}
-                    className={'w-full mt-1 bg-gray-200 p-3'}
+                    name={"longitude"}
+                    type={"number"}
+                    className={"w-full mt-1 bg-gray-200 p-3"}
                     value={props.values.longitude}
-                    onChange={props.handleChange('longitude')}
+                    onChange={props.handleChange("longitude")}
                   />
                 </div>
-                <div className={'p-2 w-1/2'}>
-                  <label className={'w-full'}>latitude</label>
+                <div className={"p-2 w-1/2"}>
+                  <label className={"w-full"}>latitude</label>
                   <input
-                    name={'latitude'}
-                    type={'number'}
-                    className={'w-full mt-1 bg-gray-200 p-3'}
+                    name={"latitude"}
+                    type={"number"}
+                    className={"w-full mt-1 bg-gray-200 p-3"}
                     value={props.values.latitude}
-                    onChange={props.handleChange('latitude')}
+                    onChange={props.handleChange("latitude")}
                   />
                 </div>
               </div>
-              <div className={'p-2 w-auto'}>
+              <div className={"p-2 w-auto"}>
                 <button
-                  type={'button'}
+                  type={"button"}
                   onClick={() => props.handleSubmit()}
                   className={
-                    ' mr-2 text-white bg-blue-800 shadow px-3 py-2 text-sm rounded'
+                    " mr-2 text-white bg-blue-800 shadow px-3 py-2 text-sm rounded"
                   }
                 >
                   Save as place
@@ -164,7 +164,7 @@ export default function AddPlace({ placeModal, closePlaceModal }) {
                 <button
                   onClick={closePlaceModal}
                   className={
-                    'text-blue-800 border border-blue-800 shadow px-3 py-2 text-sm rounded'
+                    "text-blue-800 border border-blue-800 shadow px-3 py-2 text-sm rounded"
                   }
                 >
                   Cancel
@@ -177,14 +177,3 @@ export default function AddPlace({ placeModal, closePlaceModal }) {
     </Modal>
   );
 }
-
-const customStyles = {
-  content: {
-    top: '50%',
-    left: '50%',
-    right: 'auto',
-    bottom: 'auto',
-    marginRight: '-50%',
-    transform: 'translate(-50%, -50%)',
-  },
-};
